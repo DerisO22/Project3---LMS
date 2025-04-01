@@ -7,11 +7,13 @@ function App() {
 
   return (
     <div>
-      <div style={{ textAlign: 'right', padding: '10px' }}>
+      <div>
         {!loggedIn ? (
           <Login onLogin={() => setLoggedIn(true)} />
         ) : (
-          <button onClick={() => setLoggedIn(false)}>Logout</button>
+          <div className='logoutContainer'>
+            <button className='logoutButton' onClick={() => setLoggedIn(false)}>Logout</button>
+          </div>
         )}
       </div>
       <Dashboard isAdmin={loggedIn} />

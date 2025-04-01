@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Form from './Form';
+import '../App.css'
 
 export default function Dashboard({ isAdmin }) {
   const [categories, setCategories] = useState([]);
@@ -72,8 +73,8 @@ export default function Dashboard({ isAdmin }) {
   );
 
   return (
-    <div>
-      <h2>Categories</h2>
+    <div className='dataContainer'>
+      <h2 className='header2'>Categories</h2>
       {isAdmin && (
         <Form
           type="category"
@@ -105,7 +106,7 @@ export default function Dashboard({ isAdmin }) {
         </tbody>
       </table>
 
-      <h2>All Products</h2>
+      <h2 className='header2'>All Products</h2>
       <input
         placeholder="Search product name..."
         value={search}

@@ -1,38 +1,187 @@
-.App {
+/* Variable Styles */
+:root {
+  --main-color: white;
+  --bg-color: white;
+  --text-color: #005eb8;
+  --bg2-color: #fcb900;
+  --bg3-color: #00a9e0;
+}
+
+.header1 {
+  font-size: 2rem;
+  font-weight: 800;
+  text-align: center;
+  color: var(--text-color);
+}
+
+.header2 {
+  font-size: 2rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--text-color);
+}
+
+.text {
+  font-size: 2rem;
+  font-weight: 400;
+  text-align: center;
+  color: var(--text-color);
+}
+
+input {
+  padding: .5rem;
+  font-size: 0.8rem;
+  background-color: var(--bg-color);
+  border: none;
+  border-bottom: 2px solid #005eb8;
+  border-left: 1px solid rgba(0,0,0,.2);
+  border-top: 1px solid rgba(0,0,0,.2);
+  border-right: 1px solid rgba(0,0,0,.2);
+}
+
+.categoryDropDown {
+  width: 120px;
+  height: 35px;
+}
+
+form input,
+form .categoryDropDown,
+form button {
+  margin-left: 10px;
+  margin-bottom: 10px
+}
+
+table button {
+  margin-left: 10px;
+}
+
+/* Styling For Login Form Elements */
+.notLoggedInContainer {
+  background-color: aliceblue;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  left: 0;
+  width: 100%;
+  height: 15vh;
+  position: relative;
+  justify-content: center;
+  border-bottom: 2px solid var(--bg2-color);
+}
+
+.loginForm {
+  padding-top:1rem;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1rem;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.loginButton {
+  background-color: var(--bg2-color);
+  color: var(--text-color);
+  width: 80px;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  transition: all 0.3s ease-in-out;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.loginButton:hover {
+  border-radius: 0;
+  background-color: var(--text-color);
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.logoutContainer {
+  position: relative;
+  width: 100%;
+  height: 40px;
+  background-color: aliceblue;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.logoutButton {
+  right: 0;
+  z-index: 5;
+  position: absolute;
+  background-color: var(--bg2-color);
+  color: var(--text-color);
+  width: 80px;
+  height: 40px;
+  border-radius: 0;
+  border: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.logoutButton:hover {
+  background-color: var(--bg3-color);
+  color: white;
+}
+
+
+button {
+  background-color: var(--bg2-color);
+  color: var(--text-color);
+  width: 60px;
+  height: 30px;
+  border-radius: 10px;
+  border: none;
+  transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+  border-radius: 0;
+  background-color: var(--text-color);
+  color: white;
+}
+
+.formInput {
+  padding: .5rem;
+  font-size: 1rem;
+  background-color: var(--bg-color);
+  border: none;
+  border-bottom: 2px solid #005eb8;
+  border-left: 1px solid rgba(0,0,0,.2);
+  border-top: 1px solid rgba(0,0,0,.2);
+  border-right: 1px solid rgba(0,0,0,.2);
+}
+
+/* Tables and Data Container */
+.dataContainer{
+  background-color: #005fb879;
+  text-align: center;
+  width: 100%;
+  position: relative;
+  padding-top: 3rem;
+  padding-bottom: 5rem;
+  border-bottom: 2px solid #005eb8;
+}
+
+.dataContainer .header2 {
+    color: aliceblue;
+}
+
+.dataContainer table {
+  margin: auto;
+  background-color: var(--main-color);
+  border: transparent;
+}
+
+.dataContainer thead {
+  font-size: 1.1rem;
+  background-color: #005fb879;
+  border-bottom: 4px solid var(--bg2-color);
+}
+
+
+/* Media Queries */
+@media screen and (max-width: 800px) {
+  .notLoggedInContainer {
+    gap: 0.1rem;
   }
-  to {
-    transform: rotate(360deg);
+  .formInput {
+    padding: .2rem;
   }
 }
