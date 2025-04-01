@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import '../App.css'
 
 export default function Login({ onLogin }) {
   const [user, setUser] = useState('');
@@ -19,19 +20,28 @@ export default function Login({ onLogin }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <>
+    <div className='notLoggedInContainer'>
+      <div className='header1'>You're Not Logged in!</div>
+      <div className='header2'>Log in to edit tables</div>
+
+      <form className='loginForm' onSubmit={handleSubmit}>
       <input
+        className='formInput'
         placeholder="User ID"
         value={user}
         onChange={(e) => setUser(e.target.value)}
       />
       <input
+        className='formInput'
         type="password"
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <button type="submit">Login</button>
+      <button className='loginButton' id='loginButton' type="submit">Login</button>
     </form>
+    </div>
+    </>
   );
 }

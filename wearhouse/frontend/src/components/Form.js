@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import '../index.css';
 
 export default function Form({ type, onSubmit, initialData = {}, categories = [] }) {
   const [formData, setFormData] = useState(initialData);
@@ -44,6 +45,7 @@ export default function Form({ type, onSubmit, initialData = {}, categories = []
             required
           />
           <select
+            className='categoryDropDown'
             name="category_id"
             value={formData.category_id || ''}
             onChange={handleChange}
