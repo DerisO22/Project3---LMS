@@ -11,10 +11,10 @@ export default function Dashboard({ isAdmin }) {
   const [editProduct, setEditProduct] = useState(null);
 
   const fetchData = () => {
-    fetch('http://localhost:5000/categories')
+    fetch('http://localhost:3000/categories')
       .then(res => res.json())
       .then(setCategories);
-    fetch('http://localhost:5000/products')
+    fetch('http://localhost:3000/products')
       .then(res => res.json())
       .then(setProducts);
   };
@@ -26,8 +26,8 @@ export default function Dashboard({ isAdmin }) {
   const addOrUpdateCategory = async (data) => {
     const method = editCategory ? 'PUT' : 'POST';
     const url = editCategory
-      ? `http://localhost:5000/categories/${editCategory.category_id}`
-      : 'http://localhost:5000/categories';
+      ? `http://localhost:3000/categories/${editCategory.category_id}`
+      : 'http://localhost:3000/categories';
 
     await fetch(url, {
       method,
@@ -41,8 +41,8 @@ export default function Dashboard({ isAdmin }) {
   const addOrUpdateProduct = async (data) => {
     const method = editProduct ? 'PUT' : 'POST';
     const url = editProduct
-      ? `http://localhost:5000/products/${editProduct.product_id}`
-      : 'http://localhost:5000/products';
+      ? `http://localhost:3000/products/${editProduct.product_id}`
+      : 'http://localhost:3000/products';
 
     await fetch(url, {
       method,
@@ -54,12 +54,12 @@ export default function Dashboard({ isAdmin }) {
   };
 
   const deleteCategory = async (id) => {
-    await fetch(`http://localhost:5000/categories/${id}`, { method: 'DELETE' });
+    await fetch(`http://localhost:3000/categories/${id}`, { method: 'DELETE' });
     fetchData();
   };
 
   const deleteProduct = async (id) => {
-    await fetch(`http://localhost:5000/products/${id}`, { method: 'DELETE' });
+    await fetch(`http://localhost:3000/products/${id}`, { method: 'DELETE' });
     fetchData();
   };
 
@@ -123,7 +123,7 @@ export default function Dashboard({ isAdmin }) {
         />
       )}
 
-      <table border="1" cellPadding="6" style={{ width: '50%' }}>
+      <table style={{cellPadding: 10, width: "50%"}}>
         <thead>
           <tr>
             <th>Product ID</th>
@@ -150,6 +150,46 @@ export default function Dashboard({ isAdmin }) {
           ))}
         </tbody>
       </table>
+
+      {/* Card design for courses (Will implement later on) - Deris */}
+      {/*  Try with mapping */}
+
+      {/* This is the container holding all the cards */}
+      <div style={{marginTop: "30px"}} className='header1'>This is a test container for card below for storing courses</div>
+      <div className='courses_Container_Parent'>
+          <div className='course_Card_Container'>
+            <div className='course_Title_Container'>
+              <h2 className='cardHeader2'>CSI-300: Database Management Systems</h2>
+            </div>
+            <div className='course_Room_Container'>
+              <p className='cardText'>Joyce 310</p>
+            </div>
+            <div className='course_Time_Container'>
+              <p className='cardText'>4:30 PM</p>
+            </div>
+            <div className='course_Actions_Container'>
+              <button className='cardAdd'>Add</button>
+              <button className='cardDelete'>Drop</button>
+            </div>
+          </div>
+
+          <div className='course_Card_Container'>
+            <div className='course_Title_Container'>
+              <h2 className='cardHeader2'>CSI-300: Database Management Systems</h2>
+            </div>
+            <div className='course_Room_Container'>
+              <p className='cardText'>Joyce 310</p>
+            </div>
+            <div className='course_Time_Container'>
+              <p className='cardText'>4:30 PM</p>
+            </div>
+            <div className='course_Actions_Container'>
+              <button className='cardAdd'>Add</button>
+              <button className='cardDelete'>Drop</button>
+            </div>
+          </div>
+      </div>
+      
     </div>
   );
 }

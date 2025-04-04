@@ -5,8 +5,10 @@
   --text-color: #005eb8;
   --bg2-color: #fcb900;
   --bg3-color: #00a9e0;
+  --bg4-color: #b4d9e5;
 }
 
+/* Widely Used Class Names */
 .header1 {
   font-size: 2rem;
   font-weight: 800;
@@ -26,6 +28,83 @@
   font-weight: 400;
   text-align: center;
   color: var(--text-color);
+}
+
+/* Course Cards Styling */
+.cardHeader1 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  text-align: center;
+  color: var(--text-color);
+  text-align: left;
+  padding-left: 1rem;
+}
+
+.cardHeader2 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--text-color);
+  text-align: left;
+  padding-left: 1rem;
+}
+
+.cardText {
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--bg-color);
+  text-align: left;
+  padding-left: 1rem;
+}
+
+.courses_Container_Parent {
+  width: 100%;
+  height: fit-content;
+  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(2, 2fr);
+  align-items: center;
+  gap: 2rem;
+}
+
+.course_Card_Container{
+  width: 15rem;
+  height: fit-content;
+  border: 1px solid white;
+  display: flex;
+  flex-direction: column;
+  margin: 1rem auto 1rem auto;
+  box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.413);
+}
+
+.course_Title_Container {
+  background-color: white;
+  border-bottom: 2px solid var(--bg2-color);
+}
+
+.course_Room_Container {
+  background-color: var(--bg3-color);
+}
+
+.course_Time_Container {
+  background-color: var(--bg3-color);
+}
+
+.course_Actions_Container {
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  gap: 1rem;
+  background-color: var(--main-color);
+  border-top: 2px solid var(--bg2-color);
+}
+
+.course_Actions_Container button {
+  width: 100px;
+  font-weight: 800;
 }
 
 input {
@@ -48,7 +127,8 @@ form input,
 form .categoryDropDown,
 form button {
   margin-left: 10px;
-  margin-bottom: 10px
+  margin-bottom: 10px;
+  font-weight: 505;
 }
 
 table button {
@@ -62,7 +142,7 @@ table button {
   padding-bottom: 1rem;
   left: 0;
   width: 100%;
-  height: 15vh;
+  height: fit-content;
   position: relative;
   justify-content: center;
   border-bottom: 2px solid var(--bg2-color);
