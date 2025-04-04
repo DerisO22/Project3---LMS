@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Dashboard from './components/Dashboard';
+// import AdminPanel from './components/AdminPanel'
 import Login from './components/Login';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         )}
       </div>
       <Dashboard isAdmin={loggedIn} />
+      {/* <AdminPanel /> */}
     </div>
   );
 }

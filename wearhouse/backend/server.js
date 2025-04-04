@@ -8,11 +8,14 @@ app.use(express.json());
 
 // Auth
 app.post('/login', (req, res) => {
+  console.log("login attempt")
     console.log('🛠️ LOGIN ATTEMPT RECEIVED');
     console.log('Request headers:', req.headers);
     console.log('Request body:', req.body);
   
     const { user, password } = req.body;
+
+    // Just keep the login ADMIN ADMIN
     if (user === 'ADMIN' && password === 'ADMIN') {
       console.log('✅ Login success');
       res.json({ success: true });
@@ -21,9 +24,6 @@ app.post('/login', (req, res) => {
       res.status(401).json({ success: false });
     }
   });
-  
-  
-  
   
 // CRUD endpoints for Category
 app.get('/categories', (req, res) => {
@@ -102,4 +102,4 @@ app.get('/products', (req, res) => {
   });
   
 
-app.listen(5000, () => console.log('Backend running on port 5000'));
+app.listen(3000, () => console.log('Backend running on port 3000'));
