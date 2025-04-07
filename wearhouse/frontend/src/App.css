@@ -30,6 +30,27 @@
   color: var(--text-color);
 }
 
+th {
+  padding: 1rem;
+  border-bottom: 2px solid var(--bg2-color);
+}
+
+td {
+  padding: 1rem;
+  box-shadow: 0px 0px 1px 0px black;
+}
+
+.table_Actions_Container {
+  /* height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.5rem 1rem 0.5rem 0rem;
+  text-align: center; */
+}
+
 /* Course Cards Styling */
 .cardHeader1 {
   font-size: 1.1rem;
@@ -100,7 +121,6 @@
   gap: 1rem;
   background-color: var(--main-color);
   border-top: 2px solid var(--bg2-color);
-  
 }
 
 .course_Actions_Container button {
@@ -146,6 +166,7 @@
 }
 
 .courseListingAddButton {
+  margin-right: 0.4rem;
   width: fit-content;
   height: 3rem;
   color: var(--text-color);

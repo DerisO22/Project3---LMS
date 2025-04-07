@@ -163,7 +163,7 @@ const checkAddCourse = (course) => {
              <td>${prod.price}</td>
              <td>{prod.category_id}</td>
              {isAdmin && (
-               <td>
+               <td className='table_Actions_Container'>
                  <button onClick={() => setEditProduct(prod)}>Edit</button>
                  <button onClick={() => deleteProduct(prod.product_id)}>Delete</button>
                </td>
