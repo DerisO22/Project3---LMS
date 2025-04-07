@@ -44,7 +44,7 @@ function AdminPanel({ courses, refreshCourses, competencies }) {
       return;
     }
     // POST request to add course
-    fetch('http://localhost:5000/api/courses', {
+    fetch('http://localhost:3000/api/courses', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id, competencies: newCourseComps }),
@@ -97,7 +97,7 @@ function AdminPanel({ courses, refreshCourses, competencies }) {
       setUpdateError(true);
       return;
     }
-    fetch(`http://localhost:5000/api/courses/${updateSelectedId}`, {
+    fetch(`http://localhost:3000/api/courses/${updateSelectedId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ competencies: updateComps }),
@@ -127,7 +127,7 @@ function AdminPanel({ courses, refreshCourses, competencies }) {
       setDeleteError(true);
       return;
     }
-    fetch(`http://localhost:5000/api/courses/${deleteSelectedId}`, {
+    fetch(`http://localhost:3000/api/courses/${deleteSelectedId}`, {
       method: 'DELETE',
     })
       .then(res => res.json())
