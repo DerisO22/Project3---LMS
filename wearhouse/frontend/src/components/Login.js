@@ -23,7 +23,7 @@ export default function Login({ onLogin }) {
     <>
     <div className='notLoggedInContainer'>
       <div className='header1'>You're Not Logged in!</div>
-      <div className='header2'>Log in to edit tables</div>
+      <div className='header2'>Log in to Manage Courses</div>
 
       <form className='loginForm' onSubmit={handleSubmit}>
       <input

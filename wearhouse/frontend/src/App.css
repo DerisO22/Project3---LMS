@@ -30,6 +30,27 @@
   color: var(--text-color);
 }
 
+th {
+  padding: 1rem;
+  border-bottom: 2px solid var(--bg2-color);
+}
+
+td {
+  padding: 1rem;
+  box-shadow: 0px 0px 1px 0px black;
+}
+
+.table_Actions_Container {
+  /* height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.5rem 1rem 0.5rem 0rem;
+  text-align: center; */
+}
+
 /* Course Cards Styling */
 .cardHeader1 {
   font-size: 1.1rem;
@@ -105,6 +126,51 @@
 .course_Actions_Container button {
   width: 100px;
   font-weight: 800;
+}
+
+/* 
+*  Course Listings Styling
+*/
+.courseListContainer {
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  background-color: var(--bg3-color);
+  border: 1px solid var(--bg2-color);
+  box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.413);
+}
+
+.courseContainer {
+  width: 100%;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  gap: 4rem;
+  background-color: var(--main-color);
+  border-top: 2px solid var(--bg2-color);
+  border-bottom: 0.5px solid var(--bg2-color);
+  justify-content: center;
+  align-items: center;
+  color: var(--text-color);
+  font-weight: 700;
+}
+
+.tableBox {
+  width: 10%;
+  height: fit-content;
+  text-align: center;
+}
+
+.courseListingAddButton {
+  margin-right: 0.4rem;
+  width: fit-content;
+  height: 3rem;
+  color: var(--text-color);
+  font-weight: 700;
 }
 
 input {
@@ -254,7 +320,6 @@ button:hover {
   background-color: #005fb879;
   border-bottom: 4px solid var(--bg2-color);
 }
-
 
 /* Media Queries */
 @media screen and (max-width: 800px) {
