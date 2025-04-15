@@ -79,12 +79,40 @@ td {
   padding-left: 1rem;
 }
 
-.courses_Container_Parent {
+.student_Course_Container_Parent {
   width: 100%;
   height: fit-content;
+  display: grid;
+  justify-content: space-between;
+  align-items: center;
+  grid-template-columns: repeat(2, 2fr);
+}
+
+.courses_Container_Parent {
+  width: 20rem;
+  height: 300px;
+  overflow: auto;
   justify-content: center;
   display: grid;
-  grid-template-columns: repeat(2, 2fr);
+  align-items: center;
+  background-color: var(--bg4-color);
+  margin-top: 2rem;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 10px;
+  gap: 2rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  box-shadow: 0 0 8px 0 rgb(16, 78, 177);
+}
+
+.student_course_container {
+  width: fit-content;
+  overflow: auto;
+  margin: auto;
+  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat 1;
   align-items: center;
   gap: 2rem;
 }
@@ -92,11 +120,11 @@ td {
 .course_Card_Container{
   width: 15rem;
   height: fit-content;
-  border: 1px solid white;
+  border: 2px solid var(--bg2-color);
   display: flex;
   flex-direction: column;
-  margin: 1rem auto 1rem auto;
-  box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.413);
+  margin: 1rem 1rem 1rem 1rem;
+  box-shadow: 0 0 15px 0 rgba(25, 85, 134, 0.73);
 }
 
 .course_Title_Container {
@@ -321,6 +349,22 @@ button:hover {
   border-bottom: 4px solid var(--bg2-color);
 }
 
+/* Student Tables */
+.tableContainer {
+  width: 100%;
+  overflow: auto;
+}
+
+.studentTable th {
+  padding: 0.5rem;
+  border-bottom: 2px solid var(--bg2-color);
+}
+
+.studentTable td {
+  padding: 0.1rem;
+  box-shadow: 0px 0px 1px 0px black;
+}
+
 /* Media Queries */
 @media screen and (max-width: 800px) {
   .notLoggedInContainer {
@@ -328,5 +372,12 @@ button:hover {
   }
   .formInput {
     padding: .2rem;
+  }
+  /* Student Course Containers */
+  .courses_Container_Parent {
+    width: 16rem;
+  }
+  .course_Card_Container{
+    width: 13rem;
   }
 }

@@ -8,98 +8,81 @@ app.use(express.json());
 
 // Auth
 app.post('/login', (req, res) => {
-  console.log("login attempt")
-    console.log('🛠️ LOGIN ATTEMPT RECEIVED');
-    console.log('Request headers:', req.headers);
-    console.log('Request body:', req.body);
-  
-    const { user, password } = req.body;
+  const { user, password } = req.body;
+  if (user === 'ADMIN' && password === 'ADMIN') {
+    res.json({ success: true });
+  } else {
+    res.status(401).json({ success: false });
+  }
+});
 
-    // Just keep the login ADMIN ADMIN
-    if (user === 'ADMIN' && password === 'ADMIN') {
-      console.log('✅ Login success');
-      res.json({ success: true });
-    } else {
-      console.log('❌ Invalid credentials');
-      res.status(401).json({ success: false });
+// Get all courses with location info
+app.get('/courses', (req, res) => {
+  db.all(`
+    SELECT c.*, l.RoomNumber, l.Building 
+    FROM courses c 
+    LEFT JOIN location l ON c.LocationID = l.LocationID
+  `, [], (err, rows) => {
+    if (err) return res.status(500).json(err);
+    res.json(rows);
+  });
+});
+
+// Get all students with their majors
+app.get('/students', (req, res) => {
+  db.all(`
+    SELECT s.*, m.Major 
+    FROM students s 
+    LEFT JOIN majors m ON s.MajorID = m.MajorID
+  `, [], (err, rows) => {
+    if (err) return res.status(500).json(err);
+    res.json(rows);
+  });
+});
+
+// Get student_courses table data
+app.get('/student_courses', (req, res) => {
+  db.all(`
+    SELECT *
+    FROM student_courses 
+  `, [], (err, rows) => {
+    if (err) return res.status(500).json(err);
+    res.json(rows);
+  });
+});
+
+// Add new course
+app.post('/courses', (req, res) => {
+  const { CoursePrefix, CourseNumber, LocationID, StartTime } = req.body;
+  db.run(
+    'INSERT INTO courses (CoursePrefix, CourseNumber, LocationID, StartTime) VALUES (?, ?, ?, ?)',
+    [CoursePrefix, CourseNumber, LocationID, StartTime],
+    function(err) {
+      if (err) return res.status(500).json(err);
+      res.json({ id: this.lastID });
     }
-  });
-  
-// CRUD endpoints for Category
-app.get('/categories', (req, res) => {
-  db.all('SELECT * FROM Category', [], (err, rows) => res.json(rows));
+  );
 });
 
-app.post('/categories', (req, res) => {
-  const { category_name } = req.body;
-  db.run('INSERT INTO Category (category_name) VALUES (?)', [category_name], function(err) {
-    res.json({ id: this.lastID });
+// Update course
+app.put('/courses/:id', (req, res) => {
+  const { CoursePrefix, CourseNumber, LocationID, StartTime } = req.body;
+  db.run(
+    'UPDATE courses SET CoursePrefix = ?, CourseNumber = ?, LocationID = ?, StartTime = ? WHERE CourseID = ?',
+    [CoursePrefix, CourseNumber, LocationID, StartTime, req.params.id],
+    function(err) {
+      if (err) return res.status(500).json(err);
+      res.json({ updated: this.changes });
+    }
+  );
+});
+
+// Delete course
+app.delete('/courses/:id', (req, res) => {
+  db.run('DELETE FROM courses WHERE CourseID = ?', [req.params.id], function(err) {
+    if (err) return res.status(500).json(err);
+    res.json({ deleted: this.changes });
   });
 });
 
-// Add update/delete if needed...
-
-// Repeat for Product table...
-
-// UPDATE Category
-app.put('/categories/:id', (req, res) => {
-    const { category_name } = req.body;
-    db.run('UPDATE Category SET category_name = ? WHERE category_id = ?', 
-      [category_name, req.params.id], 
-      function(err) {
-        if (err) return res.status(500).json(err);
-        res.json({ updated: this.changes });
-      }
-    );
-  });
-  
-  // DELETE Category
-  app.delete('/categories/:id', (req, res) => {
-    db.run('DELETE FROM Category WHERE category_id = ?', [req.params.id], function(err) {
-      if (err) return res.status(500).json(err);
-      res.json({ deleted: this.changes });
-    });
-  });
-  
-  // GET all Products
-app.get('/products', (req, res) => {
-    db.all('SELECT * FROM Product', [], (err, rows) => {
-      if (err) return res.status(500).json(err);
-      res.json(rows);
-    });
-  });
-  
-  // ADD Product
-  app.post('/products', (req, res) => {
-    const { product_name, price, category_id } = req.body;
-    db.run('INSERT INTO Product (product_name, price, category_id) VALUES (?, ?, ?)', 
-      [product_name, price, category_id], 
-      function(err) {
-        if (err) return res.status(500).json(err);
-        res.json({ id: this.lastID });
-      }
-    );
-  });
-  
-  // UPDATE Product
-  app.put('/products/:id', (req, res) => {
-    const { product_name, price, category_id } = req.body;
-    db.run('UPDATE Product SET product_name = ?, price = ?, category_id = ? WHERE product_id = ?', 
-      [product_name, price, category_id, req.params.id], 
-      function(err) {
-        if (err) return res.status(500).json(err);
-        res.json({ updated: this.changes });
-      }
-    );
-  });
-  
-  // DELETE Product
-  app.delete('/products/:id', (req, res) => {
-    db.run('DELETE FROM Product WHERE product_id = ?', [req.params.id], function(err) {
-      if (err) return res.status(500).json(err);
-      res.json({ deleted: this.changes });
-    });
-  });
-  
-
-app.listen(3000, () => console.log('Backend running on port 3000'));
+app.listen(3000, '0.0.0.0', () => console.log('Server running on port 3000'));
