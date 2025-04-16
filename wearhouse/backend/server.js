@@ -77,6 +77,15 @@ app.put('/courses/:id', (req, res) => {
   );
 });
 
+
+// Delete Row From Student_Course Table
+app.delete('/student_courses/:id', (req, res) => {
+  db.run('DELETE FROM student_courses WHERE StudentID = ?', [req.params.id], function(err) {
+    if (err) return res.status(500).json(err);
+    res.json({ deleted: this.changes });
+  });
+});
+
 //Delete Student
 app.delete('/students/:id', (req, res) => {
   db.run('DELETE FROM students WHERE StudentID = ?', [req.params.id], function(err) {

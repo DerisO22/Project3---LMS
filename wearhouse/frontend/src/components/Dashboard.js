@@ -23,6 +23,22 @@ export default function Dashboard({ isAdmin }) {
   // Fetch Table Data and update states
   const fetchData = () => {
     setLoading(true);
+
+    const tableNames = ['courses', 'students', 'student_courses'];
+
+    tableNames.map(name => {
+      fetch(`http://localhost:3000/${name}`)
+      .then(res => res.json())
+      .then(data => {
+        setCourses(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error(`Error fetching ${name}:`, err);
+        setLoading(false);
+      });
+    })
+
     // Fetch course data
     fetch('http://localhost:3000/courses')
       .then(res => res.json())
@@ -58,7 +74,8 @@ export default function Dashboard({ isAdmin }) {
       })
   };
 
-  // We can definitely optimize this, but not much of an issue atm
+  // We can definitely optimize this hook, but not much of 
+  // an issue atm
   useEffect(() => {
     fetchData();
   }, []);
@@ -107,7 +124,8 @@ export default function Dashboard({ isAdmin }) {
   };
 
   const deleteStudentCoursesData = async (id) => {
-    console.log("Deleted Student:", id);
+    await fetch(`http://localhost:3000/student_courses/${id}`, { method: 'DELETE'});
+    fetchData();
   }
 
   const filteredCourses = courses.filter(c =>
@@ -122,7 +140,6 @@ export default function Dashboard({ isAdmin }) {
     `${sc.StudentID}`.toLowerCase().includes(studentCoursesSearch.toLowerCase())
   );
 
-
   return (
     <div className='dataContainer'>
       <h2 className='header2'>Course Management</h2>
@@ -133,7 +150,6 @@ export default function Dashboard({ isAdmin }) {
         onChange={e => setCourseSearch(e.target.value)}
         style={{ marginBottom: '1em', padding: '4px', width: '300px' }}
       />
-
 
       {/* Table Displaying All Courses */}
       <div className='tableContainer'>
@@ -178,12 +194,11 @@ export default function Dashboard({ isAdmin }) {
 
       {/* Student Search Bar */}
       <input
-        placeholder="Search students..."
+        placeholder="Search students..." 
         value={studentSearch}
-        onChange={e => setStudentSearch(e.target.value)}
+        onChange={e => setStudentSearch(e.target.value)} 
         style={{ marginBottom: '1em', padding: '4px', width: '300px' }}
       />
-
 
       {/* Student Table */}
       <div className='tableContainer'>
@@ -221,7 +236,14 @@ export default function Dashboard({ isAdmin }) {
       </div>
 
       {/* Student_Courses Table */}
-      <div className='tableContainer'>
+      <div className='studentCoursesTableContainer'>
+        <input
+          placeholder="Search students and their courses..."
+          value={studentCoursesSearch}
+          onChange={e => setStudentCoursesSearch(e.target.value)}
+          style={{ marginBottom: '1em', padding: '4px', width: '300px' }}
+        />
+
         <table className='studentCoursesTable' border="1" cellPadding="6">
           <thead>
             <tr>
@@ -232,12 +254,12 @@ export default function Dashboard({ isAdmin }) {
           </thead>
           <tbody>
             {filteredStudentCourses.map(sc => (
-              <tr key={sc.StudentID}>
+              <tr key={sc}>
                 <td>{sc.StudentID}</td>
                 <td>{sc.CourseID}</td>
                 {isAdmin && (
                   <td className='table_Actions_Container'>
-                    <button onClick={() => setEditStudentCourses(sc.StudentID)}>Edit</button>
+                    <button onClick={() => setEditStudentCourses(sc)}>Edit</button>
                     <button onClick={() => deleteStudentCoursesData(sc.StudentID)}>Delete</button>
                   </td>
                 )}
@@ -249,15 +271,16 @@ export default function Dashboard({ isAdmin }) {
       
       {/* Student Container */}
       <div className='student_Course_Container_Parent'>
-        {!loading && filteredCourses && (
-          filteredStudents.map(student => (
-            <div className='courses_Container_Parent'>
-              <div className='header2'>{`${student.FirstName} ${student.LastName}'s Courses`}</div>
+        {!loading && filteredCourses && filteredStudentCourses && filteredStudents && (
+          filteredStudentCourses.map(student => (
+            <div key={student} className='courses_Container_Parent'>
+              <div className='header2'>{`${student.StudentID} ${student.CourseID}'s Courses`}</div>
               <CardContainer
                 isAdmin={isAdmin}
-                courses={filteredCourses}
+                courses={filteredStudentCourses}
                 setEditCourse={setEditCourse}
                 deleteCourse={deleteCourse}
+                studentID={student.StudentID}
               />
             </div>
           ))
