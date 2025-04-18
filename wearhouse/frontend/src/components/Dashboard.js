@@ -247,20 +247,13 @@ export default function Dashboard({ isAdmin }) {
               // Filter courses for this specific student using studentCourses join table.
               // This joins the tables so we can use data like names, course title, etc instead of just IDs
               // from the student_courses table
-              // Add these logs before the filtering
-              console.log("Current student ID:", student.StudentID, "Type:", typeof student.StudentID);
-              console.log("All student courses IDs:", studentCourses.map(sc => 
-                ({ scID: sc.StudentID, type: typeof sc.StudentID })));
 
-              // Then modify your filtering code to:
               const studentCourseIds = studentCourses
                 .filter(sc => {
-                  console.log(`Comparing: ${sc.StudentID} (${typeof sc.StudentID}) === ${student.StudentID} (${typeof student.StudentID}): ${sc.StudentID === student.StudentID}`);
                   return String(sc.StudentID) === String(student.StudentID);
                 })
                 .map(sc => sc.CourseID);
 
-              console.log("Student Course IDs: ", studentCourseIds)
               const studentSpecificCourses = filteredCourses.filter(course =>
                 studentCourseIds.includes(course.CourseID)
               );
@@ -283,4 +276,3 @@ export default function Dashboard({ isAdmin }) {
       </div>
     );
 }
-
