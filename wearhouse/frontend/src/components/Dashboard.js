@@ -265,7 +265,7 @@ export default function Dashboard({ isAdmin }) {
                     isAdmin={isAdmin}
                     courses={studentSpecificCourses}
                     setEditCourse={setEditCourse}
-                    deleteCourse={handleDeleteTableData}
+                    deleteStudentCourse={handleDeleteTableData}
                     studentID={student.StudentID}
                   />
                 </div>

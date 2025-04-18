@@ -2,7 +2,7 @@ import React from 'react';
 import '../App.css';
 
 
-const CardContainer = ({ isAdmin, courses = [], setEditCourse, deleteCourse }) => {
+const CardContainer = ({ isAdmin, courses = [], setEditCourse, deleteStudentCourse }) => {
     if ( !Array.isArray(courses) || courses.length === 0) {
         console.log(courses)
         return <div className='student_course_container'>No courses available</div>;
@@ -25,7 +25,7 @@ const CardContainer = ({ isAdmin, courses = [], setEditCourse, deleteCourse }) =
                     {isAdmin && (
                         <div className='course_Actions_Container'>
                             <button onClick={() => setEditCourse(course)}>Edit</button>
-                            <button onClick={() => deleteCourse(course.CourseID)}>Delete</button>
+                            <button onClick={() => deleteStudentCourse(course.CourseID, 'student_courses')}>Delete</button>
                         </div>
                     )}
                 </div>
