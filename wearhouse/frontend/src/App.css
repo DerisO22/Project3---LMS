@@ -91,7 +91,8 @@ td {
 .courses_Container_Parent {
   width: 20rem;
   height: 300px;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: none;
   justify-content: center;
   display: grid;
   align-items: center;
