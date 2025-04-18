@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import '../index.css';
+import './Form.css';
 
-export default function Form({ type, onSubmit, initialData = {}, categories = [] }) {
+export default function Form({ type, onSubmit, initialData = {}, courses = [] }) {
   const [formData, setFormData] = useState(initialData);
 
   const handleChange = (e) => {
@@ -15,39 +15,75 @@ export default function Form({ type, onSubmit, initialData = {}, categories = []
   };
 
   return (
+    // Need this to be usable for Courses
     <form onSubmit={handleSubmit}>
-      {type === 'category' ? (
+      {type === 'courses' (
         <>
+          {/* Course Input Fields */}
           <input
-            name="category_name"
-            placeholder="Category Name"
-            value={formData.category_name || ''}
+            name="Prefix"
+            placeholder="Course Prefix"
+            value={formData.Prefix || ''}
+            onChange={handleChange}
+            required
+          />
+          <input
+            name="Number"
+            placeholder="Course Number"
+            value={formData.Number || ''}
+            onChange={handleChange}
+            required
+          />
+          <input
+            name="LocationID"
+            placeholder="Location ID"
+            value={formData.LocationID || ''}
+            onChange={handleChange}
+            required
+          />
+          <input
+            name="StartTime"
+            placeholder="Start Time"
+            value={formData.StartTime || ''}
             onChange={handleChange}
             required
           />
         </>
-      ) : (
+      ) || type ==="students" (
         <>
+          {/* Student Input Fields */}
           <input
-            name="product_name"
-            placeholder="Product Name"
-            value={formData.product_name || ''}
+            name="FirstName"
+            placeholder="First Name"
+            value={formData.FirstName || ''}
             onChange={handleChange}
             required
           />
           <input
-            name="price"
-            type="number"
-            step="0.01"
-            placeholder="Price"
-            value={formData.price || ''}
+            name="LastName"
+            placeholder="Last Name"
+            value={formData.LastName || ''}
+            onChange={handleChange}
+            required
+          />
+          <input
+            name="Email"
+            placeholder="Email"
+            value={formData.Email || ''}
+            onChange={handleChange}
+            required
+          />
+          <input
+            name="MajorID"
+            placeholder="MajorID"
+            value={formData.MajorID || ''}
             onChange={handleChange}
             required
           />
           <select
-            className='categoryDropDown'
-            name="category_id"
-            value={formData.category_id || ''}
+            className='GraduationYear'
+            name="GraduationYear"
+            value={formData.GraduationYear || ''}
             onChange={handleChange}
             required
           >
@@ -59,6 +95,8 @@ export default function Form({ type, onSubmit, initialData = {}, categories = []
             ))}
           </select>
         </>
+      ) || type === 'studentCourses' (
+
       )}
       <button type="submit">{initialData?.category_id || initialData?.product_id ? 'Update' : 'Add'}</button>
     </form>

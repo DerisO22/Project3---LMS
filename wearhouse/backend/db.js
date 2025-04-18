@@ -77,17 +77,19 @@ db.serialize(() => {
     (210, 'Joyce Hall'),
     (201, 'Joyce Hall')`);
 
-  db.run(`INSERT OR IGNORE INTO courses (CoursePrefix, CourseNumber, LocationID, StartTime) VALUES 
-    ('DAT-210', 0, 1, '10:00:00'),
-    ('DAT-410', 0, 1, '11:30:00'),
-    ('CSI-300', 1, 2, '10:00:00'),
-    ('CSI-300', 2, 2, '11:30:00')`);
+  db.run(`INSERT OR IGNORE INTO courses (CourseID, CoursePrefix, CourseNumber, LocationID, StartTime) 
+    VALUES (1, 'DAT-210', 0, 1, '10:00:00'),
+    (2, 'DAT-410', 0, 1, '11:30:00'),
+    (3, 'CSI-300', 1, 2, '10:00:00'),
+    (4, 'CSI-300', 2, 2, '11:30:00')`);
 
-  db.run(`INSERT OR IGNORE INTO students (FirstName, LastName, Email, MajorID, GraduationYear) VALUES 
-    ('Bob', 'Bash', 'bob.bash@champlain.edu', 1, 2026),
-    ('Cindy', 'Calibre', 'cindy.calibre@champlain.edu', 2, 2027),
-    ('Jack', 'Jenkins', 'jack.jenkins@champlain.edu', 2, 2025),
-    ('Rondo', 'Redis', 'rondo.redis@champlain.edu', 1, 2026)`);
+  db.run(`DELETE FROM students`)
+
+  db.run(`INSERT OR IGNORE INTO students (StudentID, FirstName, LastName, Email, MajorID, GraduationYear) VALUES 
+    (1, 'Bob', 'Bash', 'bob.bash@champlain.edu', 1, 2026),
+    (2, 'Cindy', 'Calibre', 'cindy.calibre@champlain.edu', 2, 2027),
+    (3, 'Jack', 'Jenkins', 'jack.jenkins@champlain.edu', 2, 2025),
+    (4, 'Rondo', 'Redis', 'rondo.redis@champlain.edu', 1, 2026)`);
 
   db.run(`INSERT OR IGNORE INTO grades (StudentID, CourseID, quiz1Grade, quiz2Grade, project1Grade, project2Grade, finalExamGrade)
     VALUES (1, 4, 89.4, 93.2, 92.7, 96.5, 94.0),
@@ -97,9 +99,13 @@ db.serialize(() => {
 
   db.run(`INSERT OR IGNORE INTO student_courses(StudentID, CourseID)
     VALUES (1, 4), 
-    (2, 1),
+    (1, 1),
+    (2, 2),
+    (2, 3),
+    (3, 1), 
     (3, 2),
-    (4, 3);`);
+    (4, 3),
+    (4, 4);`);
 });
 
 module.exports = db;

@@ -43,8 +43,10 @@ app.get('/students', (req, res) => {
 // Get student_courses table data
 app.get('/student_courses', (req, res) => {
   db.all(`
-    SELECT *
-    FROM student_courses 
+    SELECT sc.StudentID, sc.CourseID
+    FROM student_courses sc
+    JOIN students s ON s.StudentID = sc.StudentID
+    JOIN courses c ON c.CourseID = sc.CourseID
   `, [], (err, rows) => {
     if (err) return res.status(500).json(err);
     res.json(rows);
@@ -73,6 +75,19 @@ app.put('/courses/:id', (req, res) => {
     function(err) {
       if (err) return res.status(500).json(err);
       res.json({ updated: this.changes });
+    }
+  );
+});
+
+
+// Delete Row From Student_Course Table
+app.delete('/student_courses/:studentId/:courseId', (req, res) => {
+  db.run(
+    'DELETE FROM student_courses WHERE StudentID = ? AND CourseID = ?',
+    [req.params.studentId, req.params.courseId],
+    function(err) {
+      if (err) return res.status(500).json(err);
+      res.json({ deleted: this.changes });
     }
   );
 });
