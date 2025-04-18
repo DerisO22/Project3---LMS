@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import '../App.css';
 import CardContainer from './CardContainer';
 
-
-
+const TOTAL_TABLE_FETCHES = 3;
+const TABLES = ['courses', 'students', 'student_courses'];
 
 export default function Dashboard({ isAdmin }) {
     // Table Data States
@@ -28,49 +28,35 @@ export default function Dashboard({ isAdmin }) {
     // Fetch Table Data and update states
     const fetchData = () => {
       setLoading(true);
-      console.log("Fetching data...");
-      // Fetch course data
-      fetch('http://localhost:3000/courses')
-        .then(res => res.json())
-        .then(data => {
-          setCourses(data);
-          setLoading(false);
-        })
-        .catch(err => {
-          console.error('Error fetching courses:', err);
-          setLoading(false);
-        });
-      // Fetch student data
-      fetch('http://localhost:3000/students')
-        .then(res => res.json())
-        .then(data => {
-          setStudents(data);
-          setLoading(false)
-        })
-        .catch(err => {
-          console.log('Error Fetching students:', err);
-          setLoading(false);
-        })
-      // Fetch Student Courses Data
-      fetch('http://localhost:3000/student_courses')
-        .then(res => res.json())
-        .then(data => {
-          setStudentCourses(data);
-          setLoading(false)
-        })
-        .catch(err => {
-          console.log('Error Fetching student courses:', err);
-          setLoading(false);
-        })
+      for (let i = 0; i < TOTAL_TABLE_FETCHES; i++){
+        fetch(`http://localhost:3000/${TABLES[i]}`)
+          .then(res => res.json())
+          .then(data => {
+            if (TABLES[i] === 'courses'){
+              setCourses(data);
+              setLoading(false);
+            }
+            if (TABLES[i] === 'students'){
+              setStudents(data)
+              setLoading(false);
+            } 
+            if (TABLES[i] === 'student_courses'){
+              setStudentCourses(data)
+              setLoading(false);
+            }
+          })
+          .catch(err => {
+            console.log(`Error Fetching ${TABLES[i]}: `, err);
+            setLoading(false);
+          })
+      }
     };
-
 
     // We can definitely optimize this hook, but not much of
     // an issue atm
     useEffect(() => {
       fetchData();
     }, []);
-
 
     /*
     *  Course Data Methods
@@ -89,12 +75,6 @@ export default function Dashboard({ isAdmin }) {
       fetchData();
     };
 
-    const deleteCourse = async (id) => {
-      await fetch(`http://localhost:3000/courses/${id}`, { method: 'DELETE' });
-      fetchData();
-    };
-
-
     /*
     *  Student Data Methods (Implement Later On)
     *  Issue with fetching where its conflicting with
@@ -108,17 +88,10 @@ export default function Dashboard({ isAdmin }) {
 
     };
 
-    const deleteStudentData = async (id) => {
-      await fetch(`http://localhost:3000/students/${id}`, { method: 'DELETE' });
-      fetchData();
-    };
-
-
-    const deleteStudentCoursesData = async (id) => {
-      await fetch(`http://localhost:3000/student_courses/${id}`, { method: 'DELETE'});
+    const handleDeleteTableData = async (id, table_name) => {
+      await fetch(`http://localhost:3000/${table_name}/${id}`, { method: 'DELETE'});
       fetchData();
     }
-
 
     const filteredCourses = courses.filter(c =>
       `${c.CoursePrefix}${c.CourseNumber}`.toLowerCase().includes(courseSearch.toLowerCase())
@@ -173,7 +146,7 @@ export default function Dashboard({ isAdmin }) {
                   {isAdmin && (
                     <td className='table_Actions_Container'>
                       <button onClick={() => setEditCourse(course)}>Edit</button>
-                      <button onClick={() => deleteCourse(course.CourseID)}>Delete</button>
+                      <button onClick={() => handleDeleteTableData(course.CourseID, 'courses')}>Delete</button>
                     </td>
                   )}
                 </tr>
@@ -224,7 +197,7 @@ export default function Dashboard({ isAdmin }) {
                   {isAdmin && (
                     <td className='table_Actions_Container'>
                       <button onClick={() => setEditStudent(student)}>Edit</button>
-                      <button onClick={() => deleteStudentData(student.StudentID)}>Delete</button>
+                      <button onClick={() => handleDeleteTableData(student.StudentID, 'students')}>Delete</button>
                     </td>
                   )}
                 </tr>
@@ -258,7 +231,7 @@ export default function Dashboard({ isAdmin }) {
                   {isAdmin && (
                     <td className='table_Actions_Container'>
                       <button onClick={() => setEditStudentCourses(sc)}>Edit</button>
-                      <button onClick={() => deleteStudentCoursesData(sc.StudentID)}>Delete</button>
+                      <button onClick={() => handleDeleteTableData(sc.StudentID, 'student_courses')}>Delete</button>
                     </td>
                   )}
                 </tr>
@@ -299,7 +272,7 @@ export default function Dashboard({ isAdmin }) {
                     isAdmin={isAdmin}
                     courses={studentSpecificCourses}
                     setEditCourse={setEditCourse}
-                    deleteCourse={deleteCourse}
+                    deleteCourse={handleDeleteTableData}
                     studentID={student.StudentID}
                   />
                 </div>
