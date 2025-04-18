@@ -88,8 +88,12 @@ export default function Dashboard({ isAdmin }) {
 
     };
 
-    const handleDeleteTableData = async (id, table_name) => {
-      await fetch(`http://localhost:3000/${table_name}/${id}`, { method: 'DELETE'});
+    const handleDeleteTableData = async (id, table_name, studentID) => {
+      if (table_name === 'student_courses') {
+        await fetch(`http://localhost:3000/${table_name}/${studentID}/${id}`, { method: 'DELETE'});
+      } else {
+        await fetch(`http://localhost:3000/${table_name}/${id}`, { method: 'DELETE'});
+      }
       fetchData();
     }
 
@@ -231,7 +235,7 @@ export default function Dashboard({ isAdmin }) {
                   {isAdmin && (
                     <td className='table_Actions_Container'>
                       <button onClick={() => setEditStudentCourses(sc)}>Edit</button>
-                      <button onClick={() => handleDeleteTableData(sc.StudentID, 'student_courses')}>Delete</button>
+                      <button onClick={() => handleDeleteTableData(sc.CourseID, 'student_courses', sc.StudentID)}>Delete</button>
                     </td>
                   )}
                 </tr>

@@ -81,11 +81,15 @@ app.put('/courses/:id', (req, res) => {
 
 
 // Delete Row From Student_Course Table
-app.delete('/student_courses/:id', (req, res) => {
-  db.run('DELETE FROM student_courses WHERE StudentID = ?', [req.params.id], function(err) {
-    if (err) return res.status(500).json(err);
-    res.json({ deleted: this.changes });
-  });
+app.delete('/student_courses/:studentId/:courseId', (req, res) => {
+  db.run(
+    'DELETE FROM student_courses WHERE StudentID = ? AND CourseID = ?',
+    [req.params.studentId, req.params.courseId],
+    function(err) {
+      if (err) return res.status(500).json(err);
+      res.json({ deleted: this.changes });
+    }
+  );
 });
 
 //Delete Student
