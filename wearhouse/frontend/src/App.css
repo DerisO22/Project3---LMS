@@ -40,6 +40,25 @@ td {
   box-shadow: 0px 0px 1px 0px black;
 }
 
+.addButtonContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.addButton {
+  width: 5rem;
+  height: 3rem;
+  color: black;
+  background-color: var(--bg2-color);
+  font-weight: 700;
+}
+
+button {
+  font-weight: 700;
+}
+
 .table_Actions_Container {
   /* height: fit-content;
   display: flex;
@@ -83,8 +102,10 @@ td {
   width: 100%;
   height: fit-content;
   display: grid;
-  justify-content: space-between;
+  margin-top: 1rem;
+  justify-content: space-evenly;
   align-items: center;
+  padding-bottom: 2rem;
   grid-template-columns: repeat(2, 2fr);
 }
 
@@ -100,7 +121,7 @@ td {
   margin-top: 2rem;
   margin-left: auto;
   margin-right: auto;
-  border-radius: 10px;
+  border-radius: 5px;
   gap: 2rem;
   padding-top: 2rem;
   padding-bottom: 2rem;
@@ -295,7 +316,6 @@ table button {
   color: white;
 }
 
-
 button {
   background-color: var(--bg2-color);
   color: var(--text-color);
@@ -374,6 +394,22 @@ button:hover {
 
 .studentCoursesTable {
   margin-top: 1rem;
+}
+
+ /* ScrollBar */
+ ::-webkit-scrollbar {
+  width: 0.3rem;
+  height: 0.2rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg3-color);
+  border-radius: 0.6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-color);
+  width: 0.2rem;
 }
 
 /* Media Queries */
