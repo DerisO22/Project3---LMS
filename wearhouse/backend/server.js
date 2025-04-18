@@ -79,6 +79,9 @@ app.put('/courses/:id', (req, res) => {
   );
 });
 
+/* Needed API EndPoints for the other Updates / Deletes (Ryan) */
+
+
 
 // Delete Row From Student_Course Table
 app.delete('/student_courses/:studentId/:courseId', (req, res) => {

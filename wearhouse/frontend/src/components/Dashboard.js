@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import '../App.css';
 import CardContainer from './CardContainer';
+import Form from './Form'; // Assuming Form component exists
+import Notification from './Notification'; // Assuming Notification component exists
 
 const TOTAL_TABLE_FETCHES = 3;
 const TABLES = ['courses', 'students', 'student_courses'];
@@ -23,6 +25,11 @@ export default function Dashboard({ isAdmin }) {
     const [editCourse, setEditCourse] = useState(null);
     const [editStudent, setEditStudent] = useState(null);
     const [editStudentCourses, setEditStudentCourses] = useState(null);
+
+    // Form and Notification States
+    const [isFormOpen, setIsFormOpen] = useState(false);
+    const [formType, setFormType] = useState('');
+    const [notification, setNotification] = useState({ show: false, message: '', type: '' });
 
 
     // Fetch Table Data and update states
@@ -61,32 +68,39 @@ export default function Dashboard({ isAdmin }) {
     /*
     *  Course Data Methods
     */
-    const addOrUpdateCourse = async (data) => {
-      const method = editCourse ? 'PUT' : 'POST';
-      const url = editCourse
-        ? `http://localhost:3000/courses/${editCourse.CourseID}`
-        : 'http://localhost:3000/courses';
-      await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-      setEditCourse(null);
-      fetchData();
-    };
-
-    /*
-    *  Student Data Methods (Implement Later On)
-    *  Issue with fetching where its conflicting with
-    *  the courses app.delete()
-    */
-    const addStudent = async (data) => {
-
+    const addOrUpdateData = async (data, type) => {
+        // Set up the add/edit operations for the API endpoints
+        // ***Doesn't work for adding yet***, but you can still add the API endpoint in server.js
+        const isEdit = type === 'courses' ? editCourse : type === 'students' ? editStudent : editStudentCourses;
+        const method = isEdit ? 'PUT' : 'POST';
+        const id = isEdit?.CourseID || isEdit?.StudentID;
+        const url = isEdit
+          ? `http://localhost:3000/${type}/${id}`
+          : `http://localhost:3000/${type}`;
+        
+        try {
+            const response = await fetch(url, {
+              method,
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(data),
+            });
+            if (!response.ok) {
+              throw new Error(`Failed to ${isEdit ? 'update' : 'add'} ${type}`);
+            }
+            setNotification({ 
+              show: true, 
+              message: `${type.replace('_', ' ')} ${isEdit ? 'updated' : 'added'} successfully`, 
+              type: 'success' 
+            });
+            fetchData();
+        } catch (error) {
+            setNotification({ 
+              show: true, 
+              message: error.message, 
+              type: 'error' 
+            });
+      }
     }
-
-    const editStudentData = async (data) => {
-
-    };
 
     const handleDeleteTableData = async (id, table_name, studentID) => {
       if (table_name === 'student_courses') {
@@ -114,6 +128,35 @@ export default function Dashboard({ isAdmin }) {
 
     return (
       <div className='dataContainer'>
+        {/* Form and Notis Components */}
+        <Form
+          type={formType}
+          isOpen={isFormOpen}
+          onClose={() => {
+            setIsFormOpen(false);
+            setEditCourse(null);
+            setEditStudent(null);
+            setEditStudentCourses(null);
+          }}
+          onSubmit={(data) => {
+            if (formType === 'courses') {
+              addOrUpdateData(data, 'courses');
+              setNotification({ show: true, message: editCourse ? 'Course updated successfully' : 'Course added successfully', type: 'success' });
+            }
+            setIsFormOpen(false);
+            setEditCourse(null);
+            setEditStudent(null);
+            setEditStudentCourses(null);
+          }}
+          initialData={formType === 'courses' ? editCourse : formType === 'students' ? editStudent : editStudentCourses}
+        />
+        <Notification
+          isVisible={notification.show}
+          message={notification.message}
+          type={notification.type}
+          onClose={() => setNotification({ ...notification, show: false })}
+        />
+
         <h2 className='header2'>Course Management</h2>
         {/* Course Search Bar */}
         <input
@@ -123,6 +166,16 @@ export default function Dashboard({ isAdmin }) {
           style={{ marginBottom: '1em', padding: '4px', width: '300px' }}
         />
 
+        {/* Add Button */}
+        <div className='addButtonContainer'>
+          {isAdmin && (
+            <button className='addButton' onClick={() => {
+              setFormType('courses');
+              setEditStudent(null);
+              setIsFormOpen(true);
+            }}>Add Course</button>
+          )}
+        </div>
 
         {/* Table Displaying All Courses */}
         <div className='tableContainer'>
@@ -149,8 +202,15 @@ export default function Dashboard({ isAdmin }) {
                   <td>{course.StartTime}</td>
                   {isAdmin && (
                     <td className='table_Actions_Container'>
-                      <button onClick={() => setEditCourse(course)}>Edit</button>
-                      <button onClick={() => handleDeleteTableData(course.CourseID, 'courses')}>Delete</button>
+                      <button onClick={() => {
+                        setEditCourse(course);
+                        setFormType('courses');
+                        setIsFormOpen(true);
+                      }}>Edit</button>
+                      <button onClick={() => {
+                        handleDeleteTableData(course.CourseID, 'courses');
+                        setNotification({ show: true, message: 'Course deleted successfully', type: 'success' });
+                      }}>Delete</button>
                     </td>
                   )}
                 </tr>
@@ -165,7 +225,6 @@ export default function Dashboard({ isAdmin }) {
         {/* Student Section */}
         <h2 className='header2'>Student Management</h2>
 
-
         {/* Student Search Bar */}
         <input
           placeholder="Search students..."
@@ -173,7 +232,15 @@ export default function Dashboard({ isAdmin }) {
           onChange={e => setStudentSearch(e.target.value)}
           style={{ marginBottom: '1em', padding: '4px', width: '300px' }}
         />
-
+        <div className='addButtonContainer'>
+          {isAdmin && (
+            <button className='addButton' onClick={() => {
+              setFormType('students');
+              setEditStudent(students);
+              setIsFormOpen(true);
+            }}>Add Student</button>
+          )}
+        </div>
 
         {/* Student Table */}
         <div className='tableContainer'>
@@ -200,8 +267,15 @@ export default function Dashboard({ isAdmin }) {
                   <td>{student.GraduationYear}</td>
                   {isAdmin && (
                     <td className='table_Actions_Container'>
-                      <button onClick={() => setEditStudent(student)}>Edit</button>
-                      <button onClick={() => handleDeleteTableData(student.StudentID, 'students')}>Delete</button>
+                      <button onClick={() => {
+                        setEditStudent(student);
+                        setFormType('students');
+                        setIsFormOpen(true);
+                      }}>Edit</button>
+                      <button onClick={() => {
+                        handleDeleteTableData(student.StudentID, 'students');
+                        setNotification({ show: true, message: 'Student deleted successfully', type: 'success' });
+                      }}>Delete</button>
                     </td>
                   )}
                 </tr>
@@ -212,12 +286,24 @@ export default function Dashboard({ isAdmin }) {
 
         {/* Student_Courses Table */}
         <div className='studentCoursesTableContainer'>
+
+          {/* Search Bar */}
           <input
             placeholder="Search students and their courses..."
             value={studentCoursesSearch}
             onChange={e => setStudentCoursesSearch(e.target.value)}
             style={{ marginBottom: '1em', padding: '4px', width: '300px' }}
           />
+
+          <div className='addButtonContainer' style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginBottom: '10px' }}>
+            {isAdmin && (
+              <button className='addButton' onClick={() => {
+                setFormType('student_courses');
+                setEditStudentCourses(null);
+                setIsFormOpen(true);
+              }}>Add Student Course</button>
+            )}
+          </div>
 
           <table className='studentCoursesTable' border="1" cellPadding="6">
             <thead>
@@ -234,8 +320,15 @@ export default function Dashboard({ isAdmin }) {
                   <td>{sc.CourseID}</td>
                   {isAdmin && (
                     <td className='table_Actions_Container'>
-                      <button onClick={() => setEditStudentCourses(sc)}>Edit</button>
-                      <button onClick={() => handleDeleteTableData(sc.CourseID, 'student_courses', sc.StudentID)}>Delete</button>
+                      <button onClick={() => {
+                        setEditStudentCourses(sc);
+                        setFormType('student_courses');
+                        setIsFormOpen(true);
+                      }}>Edit</button>
+                      <button onClick={() => {
+                        handleDeleteTableData(sc.CourseID, 'student_courses', sc.StudentID);
+                        setNotification({ show: true, message: 'Student Course deleted successfully', type: 'success' });
+                      }}>Delete</button>
                     </td>
                   )}
                 </tr>
