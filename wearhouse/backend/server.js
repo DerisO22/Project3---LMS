@@ -67,20 +67,86 @@ app.post('/courses', (req, res) => {
 });
 
 // Update course
+
 app.put('/courses/:id', (req, res) => {
-  const { CoursePrefix, CourseNumber, LocationID, StartTime } = req.body;
-  db.run(
-    'UPDATE courses SET CoursePrefix = ?, CourseNumber = ?, LocationID = ?, StartTime = ? WHERE CourseID = ?',
-    [CoursePrefix, CourseNumber, LocationID, StartTime, req.params.id],
-    function(err) {
-      if (err) return res.status(500).json(err);
-      res.json({ updated: this.changes });
+  const { CoursePrefix, CourseNumber, Building, RoomNumber, StartTime } = req.body;
+  // Find or create location
+  db.get('SELECT LocationID FROM location WHERE Building = ? AND RoomNumber = ?', [Building, RoomNumber], (err, row) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Failed to find location' });
     }
-  );
+
+    let locationID;
+    if (row) {
+      locationID = row.LocationID;
+      updateCourse(locationID);
+    } else {
+      db.run('INSERT INTO location (Building, RoomNumber) VALUES (?, ?)', [Building, RoomNumber], function(err) {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ error: 'Failed to create location' });
+        }
+        locationID = this.lastID;
+        updateCourse(locationID);
+      });
+    }
+  });
+
+  function updateCourse(locationID) {
+    db.run(
+      'UPDATE courses SET CoursePrefix = ?, CourseNumber = ?, LocationID = ?, StartTime = ? WHERE CourseID = ?',
+      [CoursePrefix, CourseNumber, locationID, StartTime, req.params.id],
+      function(err) {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ error: 'Failed to update course' });
+        }
+        
+        if (this.changes === 0) {
+          return res.status(404).json({ error: 'Course not found' });
+        }
+        
+        res.json({ updated: this.changes });
+      }
+    );
+  }
 });
 
 /* Needed API EndPoints for the other Updates / Deletes (Ryan) */
 
+// // Update Student
+// app.put('/students/:id', (req, res) => {
+//   const { FirstName, LastName, Email, MajorID, GraduationYear } = req.body;
+//   db.run(
+//     'UPDATE students SET FirstName = ?, LastName = ?, Email = ?, MajorID = ?, GraduationYear = ? WHERE StudentID = ?',
+//     [FirstName, LastName, Email, MajorID, GraduationYear, req.params.id],
+//     function(err) {
+//       if (err) return res.status(500).json(err);
+//       res.json({ updated: this.changes });
+//     }
+//   );
+// });
+
+// Update Student
+app.put('/students/:id', (req, res) => {
+  console.log('Updating student with ID:', req.params.id);
+  console.log('Request body:', req.body);
+  
+  const { FirstName, LastName, Email, MajorID, GraduationYear } = req.body;
+  db.run(
+    'UPDATE students SET FirstName = ?, LastName = ?, Email = ?, MajorID = ?, GraduationYear = ? WHERE StudentID = ?',
+    [FirstName, LastName, Email, MajorID, GraduationYear, req.params.id],
+    function(err) {
+      if (err) {
+        console.error('Error updating student:', err);
+        return res.status(500).json(err);
+      }
+      console.log('Update result:', this.changes);
+      res.json({ updated: this.changes });
+    }
+  );
+});
 
 
 // Delete Row From Student_Course Table
