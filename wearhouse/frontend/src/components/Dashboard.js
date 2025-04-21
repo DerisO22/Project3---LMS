@@ -69,38 +69,43 @@ export default function Dashboard({ isAdmin }) {
     *  Course Data Methods
     */
     const addOrUpdateData = async (data, type) => {
-        // Set up the add/edit operations for the API endpoints
-        // ***Doesn't work for adding yet***, but you can still add the API endpoint in server.js
-        const isEdit = type === 'courses' ? editCourse : type === 'students' ? editStudent : editStudentCourses;
-        const method = isEdit ? 'PUT' : 'POST';
-        const id = isEdit?.CourseID || isEdit?.StudentID;
-        const url = isEdit
-          ? `http://localhost:3000/${type}/${id}`
-          : `http://localhost:3000/${type}`;
-        
-        try {
-            const response = await fetch(url, {
-              method,
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(data),
-            });
-            if (!response.ok) {
-              throw new Error(`Failed to ${isEdit ? 'update' : 'add'} ${type}`);
-            }
-            setNotification({ 
-              show: true, 
-              message: `${type.replace('_', ' ')} ${isEdit ? 'updated' : 'added'} successfully`, 
-              type: 'success' 
-            });
-            fetchData();
-        } catch (error) {
-            setNotification({ 
-              show: true, 
-              message: error.message, 
-              type: 'error' 
-            });
+      let isEdit;
+      if (type === 'courses'){ isEdit = editCourse; }
+      if (type === 'students'){ isEdit = editStudent; }
+      if (type === 'student_courses'){ isEdit = editStudentCourses; }
+      const method = isEdit ? 'PUT' : 'POST';
+     
+      let url = `http://localhost:3000/${type}`;
+      if (isEdit) {
+        if (type === 'student_courses') {
+          url = `${url}/${isEdit.StudentID}/${isEdit.CourseID}`;
+        } 
+        if (type === 'courses') {
+          const id = (type === 'courses') ? isEdit.CourseID : isEdit.StudentID;
+          url = `${url}/${id}`;
+        }
+        if (type === 'students'){
+          url = `${url}/${isEdit.StudentID}`
+        }
+      }
+
+      try {
+          const response = await fetch(url, {
+            method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          });
+          if (!response.ok) {
+            throw new Error(`Failed to ${isEdit ? 'update' : 'add'} ${type.replace('_', ' ')}`);
+          }
+          setNotification({ show: true, message: `${type.replace('_', ' ')} ${isEdit ? 'updated' : 'added'} successfully`, type: 'success'
+          });
+          fetchData();
+      } catch (error) {
+          setNotification({ show: true, message: error.message, type: 'error' });
       }
     }
+
 
     const handleDeleteTableData = async (id, table_name, studentID) => {
       if (table_name === 'student_courses') {
@@ -130,29 +135,31 @@ export default function Dashboard({ isAdmin }) {
       <div className='dataContainer'>
         {/* Form and Notis Components */}
         <Form
-          type={formType}
-          isOpen={isFormOpen}
-          onClose={() => {
-            setIsFormOpen(false);
-            setEditCourse(null);
-            setEditStudent(null);
-            setEditStudentCourses(null);
-          }}
-          onSubmit={(data) => {
-            if (formType === 'courses') {
-              addOrUpdateData(data, 'courses');
-              setNotification({ show: true, message: editCourse ? 'Course updated successfully' : 'Course added successfully', type: 'success' });
-            }
-            if (formType === 'students') {
-              addOrUpdateData(data, 'students');
-              setNotification({ show: true, message: editStudent ? 'Student updated successfully' : 'Student added successfully', type: 'success' });
-            }
-            setIsFormOpen(false);
-            setEditCourse(null);
-            setEditStudent(null);
-            setEditStudentCourses(null);
-          }}
-          initialData={formType === 'courses' ? editCourse : formType === 'students' ? editStudent : editStudentCourses}
+         type={formType}
+         isOpen={isFormOpen}
+         onClose={() => {
+           setIsFormOpen(false);
+           setEditCourse(null);
+           setEditStudent(null);
+           setEditStudentCourses(null);
+         }}
+         onSubmit={ async (data) => {
+           if (formType === 'courses') {
+             addOrUpdateData(data, 'courses');
+             // setNotification({ show: true, message: editCourse ? 'Course updated successfully' : 'Course added successfully', type: 'success' });
+           }
+           if (formType === 'students') {
+             addOrUpdateData(data, 'students');
+           }
+           if (formType === 'student_courses') {
+             addOrUpdateData(data, 'student_courses');
+           }
+           setIsFormOpen(false);
+           setEditCourse(null);
+           setEditStudent(null);
+           setEditStudentCourses(null);
+        }}
+         initialData={formType === 'courses' ? editCourse : formType === 'students' ? editStudent : editStudentCourses}
         />
         <Notification
           isVisible={notification.show}
@@ -240,7 +247,7 @@ export default function Dashboard({ isAdmin }) {
           {isAdmin && (
             <button className='addButton' onClick={() => {
               setFormType('students');
-              setEditStudent(students);
+              setEditStudent(null);
               setIsFormOpen(true);
             }}>Add Student</button>
           )}
