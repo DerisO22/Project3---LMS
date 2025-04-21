@@ -14,12 +14,10 @@ export default function Dashboard({ isAdmin }) {
     const [studentCourses, setStudentCourses] = useState([]);
     const [loading, setLoading] = useState(true);
 
-
     // Searching Data States
     const [courseSearch, setCourseSearch] = useState('');
     const [studentSearch, setStudentSearch] = useState('');
     const [studentCoursesSearch, setStudentCoursesSearch] = useState('');
-
 
     // Update Course States
     const [editCourse, setEditCourse] = useState(null);
@@ -105,7 +103,6 @@ export default function Dashboard({ isAdmin }) {
           setNotification({ show: true, message: error.message, type: 'error' });
       }
     }
-
 
     const handleDeleteTableData = async (id, table_name, studentID) => {
       if (table_name === 'student_courses') {
@@ -373,6 +370,7 @@ export default function Dashboard({ isAdmin }) {
                     isAdmin={isAdmin}
                     courses={studentSpecificCourses}
                     setEditCourse={setEditCourse}
+                    setNotification={setNotification}
                     deleteStudentCourse={handleDeleteTableData}
                     studentID={student.StudentID}
                   />

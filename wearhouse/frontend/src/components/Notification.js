@@ -6,7 +6,7 @@ const Notification = ({ isVisible, message, type, onClose }) => {
     if (isVisible) {
       const timer = setTimeout(() => {
         onClose();
-      }, 3000);
+      }, 2000);
       return () => clearTimeout(timer);
     }
   }, [isVisible, onClose]);
