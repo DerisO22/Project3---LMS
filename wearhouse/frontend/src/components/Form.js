@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import './Form.css';
 
-export default function Form({ type, isOpen, onClose, onSubmit, initialData = {} }) {
+export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}, studentData, courseData }) {
   const [formData, setFormData] = useState(initialData || {});
 
   useEffect(() => {
@@ -110,14 +110,18 @@ export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}
                 onChange={handleChange}
                 required
               />
-              <input
+              <select
                 name="MajorID"
-                placeholder="Major ID"
-                type="number"
                 value={formData.MajorID || ''}
+                defaultValue="Select a major"
                 onChange={handleChange}
                 required
-              />
+              >
+                <option value="">Select A Major</option>
+                <option value={1}>Data Science</option>
+                <option value={2}>Computer Science</option>
+              </select>
+
               <select
                 name="GraduationYear"
                 value={formData.GraduationYear || ''}
@@ -135,6 +139,31 @@ export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}
 
           {type === 'student_courses' && (
             <div className="form_fields">
+              {/* List all the students and course (writing out the IDs is less convenient)
+                  Wasn't able to figure out, but will implement this extra feature later */}
+              {/* <select
+                name="StudentID"
+                value={formData.StudentID || ''}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select Student By ID</option>
+                {studentData.map(student => {
+                  <option value={student.StudentID}>{student.studentID}</option>
+                })}
+              </select>
+
+              <select
+                name="CourseID"
+                value={formData.CourseID || ''}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select Course By ID</option>
+                {courseData.map(course => {
+                  <option value={course.CourseID}>{course.CoursePrefix}{course.CourseNumber}</option>
+                })}
+              </select> */}
               <input
                 name="StudentID"
                 placeholder="Student ID"
@@ -143,6 +172,7 @@ export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}
                 onChange={handleChange}
                 required
               />
+
               <input
                 name="CourseID"
                 placeholder="Course ID"

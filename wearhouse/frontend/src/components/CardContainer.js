@@ -4,7 +4,6 @@ import '../App.css';
 
 const CardContainer = ({ isAdmin, courses = [], setEditCourse, deleteStudentCourse, studentID, setNotification }) => {
     if ( !Array.isArray(courses) || courses.length === 0) {
-        console.log(courses)
         return <div className='student_course_container'>No courses available</div>;
     }
 

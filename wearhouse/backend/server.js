@@ -40,7 +40,6 @@ app.post('/courses', (req, res) => {
 app.post('/students/', (req, res) => {
  const { FirstName, LastName, Email, MajorID, GraduationYear } = req.body;
 
-
  db.run(
    'INSERT INTO students (FirstName, LastName, Email, MajorID, GraduationYear) VALUES (?, ?, ?, ?, ?)',
    [FirstName, LastName, Email, MajorID, GraduationYear],
@@ -54,7 +53,6 @@ app.post('/students/', (req, res) => {
 
 app.post('/student_courses/', (req, res) => {
  const { StudentID, CourseID } = req.body;
-
 
  db.run(
    'INSERT INTO student_courses (StudentID, CourseID) VALUES (?, ?)',
