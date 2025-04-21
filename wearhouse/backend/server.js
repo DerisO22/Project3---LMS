@@ -115,38 +115,38 @@ app.put('/courses/:id', (req, res) => {
 
 /* Needed API EndPoints for the other Updates / Deletes (Ryan) */
 
-// // Update Student
-// app.put('/students/:id', (req, res) => {
-//   const { FirstName, LastName, Email, MajorID, GraduationYear } = req.body;
-//   db.run(
-//     'UPDATE students SET FirstName = ?, LastName = ?, Email = ?, MajorID = ?, GraduationYear = ? WHERE StudentID = ?',
-//     [FirstName, LastName, Email, MajorID, GraduationYear, req.params.id],
-//     function(err) {
-//       if (err) return res.status(500).json(err);
-//       res.json({ updated: this.changes });
-//     }
-//   );
-// });
-
 // Update Student
 app.put('/students/:id', (req, res) => {
-  console.log('Updating student with ID:', req.params.id);
-  console.log('Request body:', req.body);
-  
   const { FirstName, LastName, Email, MajorID, GraduationYear } = req.body;
   db.run(
     'UPDATE students SET FirstName = ?, LastName = ?, Email = ?, MajorID = ?, GraduationYear = ? WHERE StudentID = ?',
     [FirstName, LastName, Email, MajorID, GraduationYear, req.params.id],
     function(err) {
-      if (err) {
-        console.error('Error updating student:', err);
-        return res.status(500).json(err);
-      }
-      console.log('Update result:', this.changes);
+      if (err) return res.status(500).json(err);
       res.json({ updated: this.changes });
     }
   );
 });
+
+// Update Student
+// app.put('/students/:id', (req, res) => {
+//   console.log('Updating student with ID:', req.params.id);
+//   console.log('Request body:', req.body);
+  
+//   const { FirstName, LastName, Email, MajorID, GraduationYear } = req.body;
+//   db.run(
+//     'UPDATE students SET FirstName = ?, LastName = ?, Email = ?, MajorID = ?, GraduationYear = ? WHERE StudentID = ?',
+//     [FirstName, LastName, Email, MajorID, GraduationYear, req.params.id],
+//     function(err) {
+//       if (err) {
+//         console.error('Error updating student:', err);
+//         return res.status(500).json(err);
+//       }
+//       console.log('Update result:', this.changes);
+//       res.json({ updated: this.changes });
+//     }
+//   );
+// });
 
 
 // Delete Row From Student_Course Table

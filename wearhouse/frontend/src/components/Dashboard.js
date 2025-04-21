@@ -143,6 +143,10 @@ export default function Dashboard({ isAdmin }) {
               addOrUpdateData(data, 'courses');
               setNotification({ show: true, message: editCourse ? 'Course updated successfully' : 'Course added successfully', type: 'success' });
             }
+            if (formType === 'students') {
+              addOrUpdateData(data, 'students');
+              setNotification({ show: true, message: editStudent ? 'Student updated successfully' : 'Student added successfully', type: 'success' });
+            }
             setIsFormOpen(false);
             setEditCourse(null);
             setEditStudent(null);
