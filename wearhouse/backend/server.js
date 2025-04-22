@@ -52,16 +52,31 @@ app.post('/students/', (req, res) => {
 
 
 app.post('/student_courses/', (req, res) => {
- const { StudentID, CourseID } = req.body;
+  const { StudentID, CourseID } = req.body;
 
- db.run(
-   'INSERT INTO student_courses (StudentID, CourseID) VALUES (?, ?)',
-   [StudentID, CourseID],
-   function (err) {
-     if (err) return res.status(500).json(err);
-     res.json({ id: this.lastID })
-   }
- );
+  db.get(`
+    SELECT c1.CoursePrefix, c1.CourseNumber 
+    FROM courses c1 
+    JOIN student_courses sc ON sc.CourseID = c1.CourseID 
+    JOIN courses c2 ON c2.CourseID = ? 
+    WHERE sc.StudentID = ? AND c1.CoursePrefix = c2.CoursePrefix`, 
+    [CourseID, StudentID], 
+    (err, row) => {
+    if (err) return res.status(500).json(err);
+    
+    if (row) {
+      return res.status(400).json({ error: `Student is already enrolled in ${row.CoursePrefix}-${row.CourseNumber}` });
+    }
+
+    db.run(
+      'INSERT INTO student_courses (StudentID, CourseID) VALUES (?, ?)',
+      [StudentID, CourseID],
+      function (err) {
+        if (err) return res.status(500).json(err);
+        res.json({ id: this.lastID })
+      }
+    );
+  });
 });
 
 
