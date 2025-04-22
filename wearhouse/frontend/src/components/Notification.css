@@ -39,6 +39,7 @@
 }
   
 .notification-close {
+    width: 2rem;
     background: none;
     border: none;
     color: white;

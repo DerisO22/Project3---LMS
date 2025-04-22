@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react';
 import '../App.css';
 import CardContainer from './CardContainer';
-import Form from './Form'; // Assuming Form component exists
-import Notification from './Notification'; // Assuming Notification component exists
+import Form from './Form'; 
+import Notification from './Notification'; 
+// Will work on these Separate Components(Ignore the DashboardComponents Folder)
+import CoursesTable from './Dashboard_components/CoursesTable';
+import StudentsTable from './Dashboard_components/StudentsTable';
+import StudentCoursesTable from './Dashboard_components/StudentCoursesTable';
 
 const TOTAL_TABLE_FETCHES = 3;
 const TABLES = ['courses', 'students', 'student_courses'];
@@ -14,12 +18,10 @@ export default function Dashboard({ isAdmin }) {
     const [studentCourses, setStudentCourses] = useState([]);
     const [loading, setLoading] = useState(true);
 
-
     // Searching Data States
     const [courseSearch, setCourseSearch] = useState('');
     const [studentSearch, setStudentSearch] = useState('');
     const [studentCoursesSearch, setStudentCoursesSearch] = useState('');
-
 
     // Update Course States
     const [editCourse, setEditCourse] = useState(null);
@@ -66,39 +68,44 @@ export default function Dashboard({ isAdmin }) {
     }, []);
 
     /*
-    *  Course Data Methods
+    *  Table Data Methods (add, update, delete, filtersearch)
     */
     const addOrUpdateData = async (data, type) => {
-        // Set up the add/edit operations for the API endpoints
-        // ***Doesn't work for adding yet***, but you can still add the API endpoint in server.js
-        const isEdit = type === 'courses' ? editCourse : type === 'students' ? editStudent : editStudentCourses;
-        const method = isEdit ? 'PUT' : 'POST';
-        const id = isEdit?.CourseID || isEdit?.StudentID;
-        const url = isEdit
-          ? `http://localhost:3000/${type}/${id}`
-          : `http://localhost:3000/${type}`;
-        
-        try {
-            const response = await fetch(url, {
-              method,
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(data),
-            });
-            if (!response.ok) {
-              throw new Error(`Failed to ${isEdit ? 'update' : 'add'} ${type}`);
-            }
-            setNotification({ 
-              show: true, 
-              message: `${type.replace('_', ' ')} ${isEdit ? 'updated' : 'added'} successfully`, 
-              type: 'success' 
-            });
-            fetchData();
-        } catch (error) {
-            setNotification({ 
-              show: true, 
-              message: error.message, 
-              type: 'error' 
-            });
+      let isEdit;
+      if (type === 'courses'){ isEdit = editCourse; }
+      if (type === 'students'){ isEdit = editStudent; }
+      if (type === 'student_courses'){ isEdit = editStudentCourses; }
+      const method = isEdit ? 'PUT' : 'POST';
+     
+      let url = `http://localhost:3000/${type}`;
+      if (isEdit) {
+        if (type === 'student_courses') {
+          console.log(editStudentCourses)
+          url = `${url}/${isEdit.StudentID}/${isEdit.CourseID}`;
+        } 
+        if (type === 'courses') {
+          const id = (type === 'courses') ? isEdit.CourseID : isEdit.StudentID;
+          url = `${url}/${id}`;
+        }
+        if (type === 'students'){
+          url = `${url}/${isEdit.StudentID}`
+        }
+      }
+
+      try {
+          const response = await fetch(url, {
+            method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          });
+          if (!response.ok) {
+            throw new Error(`Failed to ${isEdit ? 'update' : 'add'} ${type.replace('_', ' ')}`);
+          }
+          setNotification({ show: true, message: `${type.replace('_', ' ')} ${isEdit ? 'updated' : 'added'} successfully`, type: 'success'
+          });
+          fetchData();
+      } catch (error) {
+          setNotification({ show: true, message: error.message, type: 'error' });
       }
     }
 
@@ -111,15 +118,14 @@ export default function Dashboard({ isAdmin }) {
       fetchData();
     }
 
+    // Search Bar Filter
     const filteredCourses = courses.filter(c =>
       `${c.CoursePrefix}${c.CourseNumber}`.toLowerCase().includes(courseSearch.toLowerCase())
     );
 
-
     const filteredStudents = students.filter(s =>
         `${s.FirstName} ${s.LastName}`.toLowerCase().includes(studentSearch.toLowerCase())
     );
-
 
     const filteredStudentCourses = studentCourses.filter(sc =>
       `${sc.StudentID}`.toLowerCase().includes(studentCoursesSearch.toLowerCase())
@@ -130,29 +136,32 @@ export default function Dashboard({ isAdmin }) {
       <div className='dataContainer'>
         {/* Form and Notis Components */}
         <Form
-          type={formType}
-          isOpen={isFormOpen}
-          onClose={() => {
-            setIsFormOpen(false);
-            setEditCourse(null);
-            setEditStudent(null);
-            setEditStudentCourses(null);
-          }}
-          onSubmit={(data) => {
-            if (formType === 'courses') {
-              addOrUpdateData(data, 'courses');
-              setNotification({ show: true, message: editCourse ? 'Course updated successfully' : 'Course added successfully', type: 'success' });
-            }
-            if (formType === 'students') {
-              addOrUpdateData(data, 'students');
-              setNotification({ show: true, message: editStudent ? 'Student updated successfully' : 'Student added successfully', type: 'success' });
-            }
-            setIsFormOpen(false);
-            setEditCourse(null);
-            setEditStudent(null);
-            setEditStudentCourses(null);
-          }}
+         type={formType}
+         isOpen={isFormOpen}
+         onClose={() => {
+           setIsFormOpen(false);
+           setEditCourse(null);
+           setEditStudent(null);
+           setEditStudentCourses(null);
+         }}
+         onSubmit={ async (data) => {
+           if (formType === 'courses') {
+             addOrUpdateData(data, 'courses');
+           }
+           if (formType === 'students') {
+             addOrUpdateData(data, 'students');
+           }
+           if (formType === 'student_courses') {
+             addOrUpdateData(data, 'student_courses');
+           }
+           setIsFormOpen(false);
+           setEditCourse(null);
+           setEditStudent(null);
+           setEditStudentCourses(null);
+        }}
           initialData={formType === 'courses' ? editCourse : formType === 'students' ? editStudent : editStudentCourses}
+          studentData={students}
+          courseData={courses}
         />
         <Notification
           isVisible={notification.show}
@@ -167,7 +176,7 @@ export default function Dashboard({ isAdmin }) {
           placeholder="Search courses..."
           value={courseSearch}
           onChange={e => setCourseSearch(e.target.value)}
-          style={{ marginBottom: '1em', padding: '4px', width: '300px' }}
+          style={{ marginBottom: '1em', padding: '6px', width: '15rem' }}
         />
 
         {/* Add Button */}
@@ -240,7 +249,7 @@ export default function Dashboard({ isAdmin }) {
           {isAdmin && (
             <button className='addButton' onClick={() => {
               setFormType('students');
-              setEditStudent(students);
+              setEditStudent(null);
               setIsFormOpen(true);
             }}>Add Student</button>
           )}
@@ -255,7 +264,7 @@ export default function Dashboard({ isAdmin }) {
                 <th>FirstName</th>
                 <th>LastName</th>
                 <th>Email</th>
-                <th>MajorID</th>
+                <th>Major</th>
                 <th>GraduationYear</th>
                 {isAdmin && <th>Actions</th>}
               </tr>
@@ -267,7 +276,7 @@ export default function Dashboard({ isAdmin }) {
                   <td>{student.FirstName}</td>
                   <td>{student.LastName}</td>
                   <td>{student.Email}</td>
-                  <td>{student.MajorID}</td>
+                  <td>{student.Major}</td>
                   <td>{student.GraduationYear}</td>
                   {isAdmin && (
                     <td className='table_Actions_Container'>
@@ -348,7 +357,6 @@ export default function Dashboard({ isAdmin }) {
               // Filter courses for this specific student using studentCourses join table.
               // This joins the tables so we can use data like names, course title, etc instead of just IDs
               // from the student_courses table
-
               const studentCourseIds = studentCourses
                 .filter(sc => {
                   return String(sc.StudentID) === String(student.StudentID);
@@ -366,6 +374,7 @@ export default function Dashboard({ isAdmin }) {
                     isAdmin={isAdmin}
                     courses={studentSpecificCourses}
                     setEditCourse={setEditCourse}
+                    setNotification={setNotification}
                     deleteStudentCourse={handleDeleteTableData}
                     studentID={student.StudentID}
                   />
