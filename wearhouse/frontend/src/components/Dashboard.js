@@ -4,29 +4,32 @@ import CardContainer from './CardContainer';
 import Form from './Form'; 
 import Notification from './Notification'; 
 // Will work on these Separate Components(Ignore the DashboardComponents Folder)
-import CoursesTable from './Dashboard_components/CoursesTable';
-import StudentsTable from './Dashboard_components/StudentsTable';
-import StudentCoursesTable from './Dashboard_components/StudentCoursesTable';
+// import CoursesTable from './Dashboard_components/CoursesTable';
+// import StudentsTable from './Dashboard_components/StudentsTable';
+// import StudentCoursesTable from './Dashboard_components/StudentCoursesTable';
 
-const TOTAL_TABLE_FETCHES = 3;
-const TABLES = ['courses', 'students', 'student_courses'];
+const TOTAL_TABLE_FETCHES = 4;
+const TABLES = ['courses', 'students', 'student_courses', 'grades'];
 
 export default function Dashboard({ isAdmin }) {
     // Table Data States
     const [students, setStudents] = useState([]);
     const [courses, setCourses] = useState([]);
     const [studentCourses, setStudentCourses] = useState([]);
+    const [studentGrades, setStudentGrades] = useState([]);
     const [loading, setLoading] = useState(true);
 
     // Searching Data States
     const [courseSearch, setCourseSearch] = useState('');
     const [studentSearch, setStudentSearch] = useState('');
     const [studentCoursesSearch, setStudentCoursesSearch] = useState('');
+    const [studentGradeSearch, setStudentGradeSearch] = useState('');
 
     // Update Course States
     const [editCourse, setEditCourse] = useState(null);
     const [editStudent, setEditStudent] = useState(null);
     const [editStudentCourses, setEditStudentCourses] = useState(null);
+    const [editStudentGrades, setEditStudentGrades] = useState(null);
 
     // Form and Notification States
     const [isFormOpen, setIsFormOpen] = useState(false);
@@ -46,11 +49,15 @@ export default function Dashboard({ isAdmin }) {
               setLoading(false);
             }
             if (TABLES[i] === 'students'){
-              setStudents(data)
+              setStudents(data);
               setLoading(false);
             } 
             if (TABLES[i] === 'student_courses'){
-              setStudentCourses(data)
+              setStudentCourses(data);
+              setLoading(false);
+            }
+            if (TABLES[i] === 'grades'){
+              setStudentGrades(data);
               setLoading(false);
             }
           })
@@ -75,20 +82,23 @@ export default function Dashboard({ isAdmin }) {
       if (type === 'courses'){ isEdit = editCourse; }
       if (type === 'students'){ isEdit = editStudent; }
       if (type === 'student_courses'){ isEdit = editStudentCourses; }
+      if (type === 'grades') { isEdit = editStudentGrades; }
       const method = isEdit ? 'PUT' : 'POST';
      
       let url = `http://localhost:3000/${type}`;
       if (isEdit) {
         if (type === 'student_courses') {
-          console.log(editStudentCourses)
           url = `${url}/${isEdit.StudentID}/${isEdit.CourseID}`;
         } 
         if (type === 'courses') {
           const id = (type === 'courses') ? isEdit.CourseID : isEdit.StudentID;
           url = `${url}/${id}`;
         }
-        if (type === 'students'){
+        if (type === 'students') {
           url = `${url}/${isEdit.StudentID}`
+        }
+        if (type === 'grades') {
+          url = `${url}/${isEdit.StudentID}/${isEdit.CourseID}`
         }
       }
 
@@ -131,6 +141,9 @@ export default function Dashboard({ isAdmin }) {
       `${sc.StudentID}`.toLowerCase().includes(studentCoursesSearch.toLowerCase())
     );
 
+    const filteredGrades = studentGrades.filter(g => 
+      `${g.FirstName}`.toLowerCase().includes(studentGradeSearch.toLowerCase())
+    );
 
     return (
       <div className='dataContainer'>
@@ -151,6 +164,9 @@ export default function Dashboard({ isAdmin }) {
            if (formType === 'students') {
              addOrUpdateData(data, 'students');
            }
+           if (formType === 'grades') {
+            addOrUpdateData(data, 'grades')
+           }
            if (formType === 'student_courses') {
              addOrUpdateData(data, 'student_courses');
            }
@@ -158,6 +174,7 @@ export default function Dashboard({ isAdmin }) {
            setEditCourse(null);
            setEditStudent(null);
            setEditStudentCourses(null);
+           setEditStudentGrades(null);
         }}
           initialData={formType === 'courses' ? editCourse : formType === 'students' ? editStudent : editStudentCourses}
           studentData={students}
@@ -288,6 +305,71 @@ export default function Dashboard({ isAdmin }) {
                       <button onClick={() => {
                         handleDeleteTableData(student.StudentID, 'students');
                         setNotification({ show: true, message: 'Student deleted successfully', type: 'success' });
+                      }}>Delete</button>
+                    </td>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Grades Table */}
+        <h2 className='header2'>Student Grades Management</h2>
+
+        {/* Add Button */}
+        <div className='addButtonContainer'>
+          {isAdmin && (
+            <button className='addButton' onClick={() => {
+              setFormType('grades');
+              setEditStudentGrades(null);
+              setIsFormOpen(true);
+            }}>Add Student's Grades</button>
+          )}
+        </div>
+
+        {/* Grades Search Bar */}
+        <input
+          placeholder="Search Grades by Name..."
+          value={studentGradeSearch}
+          onChange={e => setStudentGradeSearch(e.target.value)}
+          style={{ marginBottom: '1em', padding: '6px', width: '15rem' }}
+        />
+
+        <div className='tableContainer'>
+          <table className='studentTable' border="1" cellPadding="6">
+            <thead>
+              <tr>
+                <th>Student</th>
+                <th>Course</th>
+                <th>Quiz 1</th>
+                <th>Quiz 2</th>
+                <th>Project 1</th>
+                <th>Project 2</th>
+                <th>Final Exam</th>
+                {isAdmin && <th>Actions</th>}
+              </tr>
+            </thead>
+            <tbody>
+              {filteredGrades.map(g => (
+                  <tr key={`${g.StudentID}-${g.CourseID}`}>
+                  <td>{g.FirstName} {g.LastName}</td>
+                  <td>{g.CoursePrefix}-{g.CourseNumber}</td>
+                  <td>{g.quiz1Grade || 'N/A'}</td>
+                  <td>{g.quiz2Grade || 'N/A'}</td>
+                  <td>{g.project1Grade || 'N/A'}</td>
+                  <td>{g.project2Grade || 'N/A'}</td>
+                  <td>{g.finalExamGrade || 'N/A'}</td>
+                  {isAdmin && (
+                    <td className='table_Actions_Container'>
+                      <button onClick={() => {
+                        setEditStudentGrades(g);
+                        setFormType('grades');
+                        setIsFormOpen(true);
+                      }}>Edit</button>
+                      <button onClick={() => {
+                        handleDeleteTableData(g.GradeID, 'grades');
+                        setNotification({ show: true, message: 'Grade record deleted successfully', type: 'success' });
                       }}>Delete</button>
                     </td>
                   )}

@@ -181,7 +181,81 @@ export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}
                 onChange={handleChange}
                 required
               />
-            </div>
+            </div>)}
+            {type === 'grades' && (
+              <div className="form_fields">
+                <input
+                  name="StudentID"
+                  placeholder="Student ID"
+                  type="number"
+                  value={formData.StudentID || ''}
+                  onChange={handleChange}
+                  required
+                />
+                <input
+                  name="CourseID"
+                  placeholder="Course ID"
+                  type="number"
+                  value={formData.CourseID || ''}
+                  onChange={handleChange}
+                  required
+                />
+                <input
+                  name="quiz1Grade"
+                  placeholder="Quiz 1 Grade"
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  max="100"
+                  value={formData.quiz1Grade || ''}
+                  onChange={handleChange}
+                  required
+                />
+                <input
+                  name="quiz2Grade"
+                  placeholder="Quiz 2 Grade"
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  max="100"
+                  value={formData.quiz2Grade || ''}
+                  onChange={handleChange}
+                  required
+                />
+                <input
+                  name="project1Grade"
+                  placeholder="Project 1 Grade"
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  max="100"
+                  value={formData.project1Grade || ''}
+                  onChange={handleChange}
+                  required
+                />
+                <input
+                  name="project2Grade"
+                  placeholder="Project 2 Grade"
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  max="100"
+                  value={formData.project2Grade || ''}
+                  onChange={handleChange}
+                  required
+                />
+                <input
+                  name="finalExamGrade"
+                  placeholder="Final Exam Grade"
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  max="100"
+                  value={formData.finalExamGrade || ''}
+                  onChange={handleChange}
+                  required
+                />
+                </div>
           )}
 
           <div className="form_actions">

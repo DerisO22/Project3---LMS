@@ -87,6 +87,19 @@ app.post('/student_courses/', (req, res) => {
   });
 });
 
+app.post('/grades/', (req, res) => {
+  const { StudentID, CourseID, quiz1Grade, quiz2Grade, project1Grade, project2Grade, finalExamGrade } = req.body;
+
+  db.run(
+    'INSERT OR IGNORE INTO grades (StudentID, CourseID, quiz1Grade, quiz2Grade, project1Grade, project2Grade, finalExamGrade) VALUES (?, ?, ?, ?, ?, ?, ?)',
+    [StudentID, CourseID, quiz1Grade, quiz2Grade, project1Grade, project2Grade, finalExamGrade],
+    function (err) {
+      if (err) return res.status(500).json(err);
+      res.json({ id: this.lastID })
+    }
+  )
+});
+
 
 /*
  Read Table API Endpoints (get)
@@ -116,6 +129,19 @@ app.get('/students', (req, res) => {
  });
 });
 
+// Get grade table data
+app.get('/grades', (req, res) => {
+  db.all(`
+    SELECT g.*, s.FirstName, s.LastName, c.CoursePrefix, c.CourseNumber
+    FROM grades g
+    JOIN students s ON s.StudentID = g.StudentID
+    JOIN courses c ON c.CourseID = g.CourseID
+    `, [], (err, rows) => {
+      if (err) return res.status(500).json(err);
+      res.json(rows);
+    }
+  )
+})
 
 // Get student_courses table data
 app.get('/student_courses', (req, res) => {
@@ -172,6 +198,20 @@ app.put('/students/:id', (req, res) => {
  );
 });
 
+// Update Grades Table
+app.put('/grades/:studentId/:courseId', (req, res) => {
+  const { quiz1Grade, quiz2Grade, project1Grade, project2Grade, finalExamGrade } = req.body;
+  const { studentId, courseId } = req.params;
+
+  db.run(
+    'UPDATE grades SET quiz1Grade = ?, quiz2Grade = ?, project1Grade = ?, project2Grade = ?, finalExamGrade = ? WHERE StudentID = ? AND CourseID = ?',
+    [quiz1Grade, quiz2Grade, project1Grade, project2Grade, finalExamGrade, studentId, courseId],
+    function(err) {
+      if (err) return res.status(500).json(err);
+      res.json({ updated: this.changes });
+    }
+  );
+});
 
 // Update student_courses Table
 app.put('/student_courses/:studentId/:courseId', (req, res) => {
@@ -219,7 +259,6 @@ app.delete('/student_courses/:studentId/:courseId', (req, res) => {
  );
 });
 
-
 //Delete Student
 app.delete('/students/:id', (req, res) => {
  db.run('DELETE FROM students WHERE StudentID = ?', [req.params.id], function(err) {
@@ -228,6 +267,13 @@ app.delete('/students/:id', (req, res) => {
  });
 });
 
+//Delete Student's Grades
+app.delete('/grades/:id', (req, res) => {
+  db.run('DELETE FROM grades WHERE GradeID = ?', [req.params.id], function(err) {
+    if (err) return res.status(500).json(err);
+    res.json({ deleted: this.changes });
+  });
+ });
 
 // Delete course
 app.delete('/courses/:id', (req, res) => {

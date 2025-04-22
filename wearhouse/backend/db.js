@@ -77,6 +77,8 @@ db.serialize(() => {
     (210, 'Joyce Hall'),
     (201, 'Joyce Hall')`);
 
+  db.run(`DELETE FROM courses`)
+
   db.run(`INSERT OR IGNORE INTO courses (CourseID, CoursePrefix, CourseNumber, LocationID, StartTime) 
     VALUES (1, 'DAT-210', 0, 1, '10:00:00'),
     (2, 'DAT-410', 0, 1, '11:30:00'),
@@ -90,6 +92,8 @@ db.serialize(() => {
     (2, 'Cindy', 'Calibre', 'cindy.calibre@champlain.edu', 2, 2027),
     (3, 'Jack', 'Jenkins', 'jack.jenkins@champlain.edu', 2, 2025),
     (4, 'Rondo', 'Redis', 'rondo.redis@champlain.edu', 1, 2026)`);
+
+  db.run(`DELETE FROM grades`)
 
   db.run(`INSERT OR IGNORE INTO grades (StudentID, CourseID, quiz1Grade, quiz2Grade, project1Grade, project2Grade, finalExamGrade)
     VALUES (1, 4, 89.4, 93.2, 92.7, 96.5, 94.0),
