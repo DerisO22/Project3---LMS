@@ -25,15 +25,23 @@ app.post('/login', (req, res) => {
 */
 // Add new course
 app.post('/courses', (req, res) => {
- const { CoursePrefix, CourseNumber, LocationID, StartTime } = req.body;
- db.run(
-   'INSERT INTO courses (CoursePrefix, CourseNumber, LocationID, StartTime) VALUES (?, ?, ?, ?)',
-   [CoursePrefix, CourseNumber, LocationID, StartTime],
+  const { CoursePrefix, CourseNumber, RoomNumber, Building, StartTime } = req.body;
+  db.run (
+    'INSERT OR REPLACE INTO location (RoomNumber, Building) VALUES (?, ?)',
+   [RoomNumber, Building],
    function(err) {
-     if (err) return res.status(500).json(err);
-     res.json({ id: this.lastID });
-   }
- );
+    if (err) return res.status(500).json(err);
+    const locationID = this.lastID;
+
+    db.run(
+      'INSERT INTO courses (CoursePrefix, CourseNumber, locationID, StartTime) VALUES (?, ?, ?, ?)',
+      [CoursePrefix, CourseNumber, locationID, StartTime],
+      function(err) {
+        if (err) return res.status(500).json(err);
+        res.json({ id: this.lastID });
+      }
+      )
+  });
 });
 
 
