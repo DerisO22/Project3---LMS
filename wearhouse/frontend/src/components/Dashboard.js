@@ -3,10 +3,10 @@ import '../App.css';
 import CardContainer from './CardContainer';
 import Form from './Form'; 
 import Notification from './Notification'; 
-// Will work on these Separate Components(Ignore the DashboardComponents Folder)
-// import CoursesTable from './Dashboard_components/CoursesTable';
-// import StudentsTable from './Dashboard_components/StudentsTable';
-// import StudentCoursesTable from './Dashboard_components/StudentCoursesTable';
+import CoursesTable from './Dashboard_components/CoursesTable';
+import StudentsTable from './Dashboard_components/StudentsTable';
+import StudentCoursesTable from './Dashboard_components/StudentCoursesTable';
+import GradeTable from './Dashboard_components/GradeTable';
 
 const TOTAL_TABLE_FETCHES = 4;
 const TABLES = ['courses', 'students', 'student_courses', 'grades'];
@@ -111,8 +111,7 @@ export default function Dashboard({ isAdmin }) {
           if (!response.ok) {
             throw new Error(`Failed to ${isEdit ? 'update' : 'add'} ${type.replace('_', ' ')}`);
           }
-          setNotification({ show: true, message: `${type.replace('_', ' ')} ${isEdit ? 'updated' : 'added'} successfully`, type: 'success'
-          });
+          setNotification({ show: true, message: `${type.replace('_', ' ')} ${isEdit ? 'updated' : 'added'} successfully`, type: 'success'});
           fetchData();
       } catch (error) {
           setNotification({ show: true, message: error.message, type: 'error' });
@@ -147,7 +146,11 @@ export default function Dashboard({ isAdmin }) {
 
     return (
       <div className='dataContainer'>
-        {/* Form and Notis Components */}
+        {/* 
+        *
+        *   Form Component 
+        * 
+        */}
         <Form
          type={formType}
          isOpen={isFormOpen}
@@ -180,6 +183,12 @@ export default function Dashboard({ isAdmin }) {
           studentData={students}
           courseData={courses}
         />
+
+        {/* 
+        *
+        *   Notficiation Component
+        * 
+        */}
         <Notification
           isVisible={notification.show}
           message={notification.message}
@@ -187,252 +196,61 @@ export default function Dashboard({ isAdmin }) {
           onClose={() => setNotification({ ...notification, show: false })}
         />
 
-        <h2 className='header2'>Course Management</h2>
-        {/* Course Search Bar */}
-        <input
-          placeholder="Search courses..."
-          value={courseSearch}
-          onChange={e => setCourseSearch(e.target.value)}
-          style={{ marginBottom: '1em', padding: '6px', width: '15rem' }}
-        />
-
-        {/* Add Button */}
-        <div className='addButtonContainer'>
-          {isAdmin && (
-            <button className='addButton' onClick={() => {
-              setFormType('courses');
-              setEditStudent(null);
-              setIsFormOpen(true);
-            }}>Add Course</button>
-          )}
-        </div>
-
-        {/* Table Displaying All Courses */}
-        <div className='tableContainer'>
-          <table border="1" cellPadding="6">
-            <thead>
-              <tr>
-                <th>Course ID</th>
-                <th>Prefix</th>
-                <th>Number</th>
-                <th>Room</th>
-                <th>Building</th>
-                <th>Start Time</th>
-                {isAdmin && <th>Actions</th>}
-              </tr>
-            </thead>
-            <tbody>
-              {filteredCourses.map(course => (
-                <tr key={course.CourseID}>
-                  <td>{course.CourseID}</td>
-                  <td>{course.CoursePrefix}</td>
-                  <td>{course.CourseNumber}</td>
-                  <td>{course.RoomNumber}</td>
-                  <td>{course.Building}</td>
-                  <td>{course.StartTime}</td>
-                  {isAdmin && (
-                    <td className='table_Actions_Container'>
-                      <button onClick={() => {
-                        setEditCourse(course);
-                        setFormType('courses');
-                        setIsFormOpen(true);
-                      }}>Edit</button>
-                      <button onClick={() => {
-                        handleDeleteTableData(course.CourseID, 'courses');
-                        setNotification({ show: true, message: 'Course deleted successfully', type: 'success' });
-                      }}>Delete</button>
-                    </td>
-                  )}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* We'll have students with their own tables and Each student will have a vertical scrollable
-            Container that shows their courses using the cards
+        {/* 
+        *
+        *   Table Components
+        * 
         */}
-        {/* Student Section */}
-        <h2 className='header2'>Student Management</h2>
-
-        {/* Student Search Bar */}
-        <input
-          placeholder="Search students..."
-          value={studentSearch}
-          onChange={e => setStudentSearch(e.target.value)}
-          style={{ marginBottom: '1em', padding: '4px', width: '300px' }}
-        />
-        <div className='addButtonContainer'>
-          {isAdmin && (
-            <button className='addButton' onClick={() => {
-              setFormType('students');
-              setEditStudent(null);
-              setIsFormOpen(true);
-            }}>Add Student</button>
-          )}
-        </div>
-
-        {/* Student Table */}
-        <div className='tableContainer'>
-          <table className='studentTable' border="1" cellPadding="6">
-            <thead>
-              <tr>
-                <th>StudentID</th>
-                <th>FirstName</th>
-                <th>LastName</th>
-                <th>Email</th>
-                <th>Major</th>
-                <th>GraduationYear</th>
-                {isAdmin && <th>Actions</th>}
-              </tr>
-            </thead>
-            <tbody>
-              {filteredStudents.map(student => (
-                <tr key={student.StudentID}>
-                  <td>{student.StudentID}</td>
-                  <td>{student.FirstName}</td>
-                  <td>{student.LastName}</td>
-                  <td>{student.Email}</td>
-                  <td>{student.Major}</td>
-                  <td>{student.GraduationYear}</td>
-                  {isAdmin && (
-                    <td className='table_Actions_Container'>
-                      <button onClick={() => {
-                        setEditStudent(student);
-                        setFormType('students');
-                        setIsFormOpen(true);
-                      }}>Edit</button>
-                      <button onClick={() => {
-                        handleDeleteTableData(student.StudentID, 'students');
-                        setNotification({ show: true, message: 'Student deleted successfully', type: 'success' });
-                      }}>Delete</button>
-                    </td>
-                  )}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Grades Table */}
-        <h2 className='header2'>Student Grades Management</h2>
-
-        {/* Add Button */}
-        <div className='addButtonContainer'>
-          {isAdmin && (
-            <button className='addButton' onClick={() => {
-              setFormType('grades');
-              setEditStudentGrades(null);
-              setIsFormOpen(true);
-            }}>Add Student's Grades</button>
-          )}
-        </div>
-
-        {/* Grades Search Bar */}
-        <input
-          placeholder="Search Grades by Name..."
-          value={studentGradeSearch}
-          onChange={e => setStudentGradeSearch(e.target.value)}
-          style={{ marginBottom: '1em', padding: '6px', width: '15rem' }}
+        <CoursesTable 
+          isAdmin={isAdmin}
+          filteredCourses={filteredCourses}
+          setEditCourse={setEditCourse}
+          setFormType={setFormType}
+          setIsFormOpen={setIsFormOpen}
+          handleDeleteTableData={handleDeleteTableData}
+          setNotification={setNotification}
+          courseSearch={courseSearch}
+          setCourseSearch={setCourseSearch}
+          setEditStudent={setEditStudent}
         />
 
-        <div className='tableContainer'>
-          <table className='studentTable' border="1" cellPadding="6">
-            <thead>
-              <tr>
-                <th>Student</th>
-                <th>Course</th>
-                <th>Quiz 1</th>
-                <th>Quiz 2</th>
-                <th>Project 1</th>
-                <th>Project 2</th>
-                <th>Final Exam</th>
-                {isAdmin && <th>Actions</th>}
-              </tr>
-            </thead>
-            <tbody>
-              {filteredGrades.map(g => (
-                  <tr key={`${g.StudentID}-${g.CourseID}`}>
-                  <td>{g.FirstName} {g.LastName}</td>
-                  <td>{g.CoursePrefix}-{g.CourseNumber}</td>
-                  <td>{g.quiz1Grade || 'N/A'}</td>
-                  <td>{g.quiz2Grade || 'N/A'}</td>
-                  <td>{g.project1Grade || 'N/A'}</td>
-                  <td>{g.project2Grade || 'N/A'}</td>
-                  <td>{g.finalExamGrade || 'N/A'}</td>
-                  {isAdmin && (
-                    <td className='table_Actions_Container'>
-                      <button onClick={() => {
-                        setEditStudentGrades(g);
-                        setFormType('grades');
-                        setIsFormOpen(true);
-                      }}>Edit</button>
-                      <button onClick={() => {
-                        handleDeleteTableData(g.GradeID, 'grades');
-                        setNotification({ show: true, message: 'Grade record deleted successfully', type: 'success' });
-                      }}>Delete</button>
-                    </td>
-                  )}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <StudentsTable 
+          isAdmin={isAdmin}
+          filteredStudents={filteredStudents}
+          setEditStudent={setEditStudent}
+          setFormType={setFormType}
+          setIsFormOpen={setIsFormOpen}
+          handleDeleteTableData={handleDeleteTableData}
+          setNotification={setNotification}
+          studentSearch={studentSearch}
+          setStudentSearch={setStudentSearch}
+        />
 
-        {/* Student_Courses Table */}
-        <div className='studentCoursesTableContainer'>
+        <GradeTable 
+          isAdmin = {isAdmin}
+          filteredGrades = {filteredGrades}
+          setEditStudentGrades = {setEditStudentGrades}
+          setFormType= {setFormType}
+          setIsFormOpen= {setIsFormOpen}
+          handleDeleteTableData= {handleDeleteTableData}
+          setNotification= {setNotification}
+          studentGradeSearch = {studentGradeSearch}
+          setStudentGradeSearch = {setStudentGradeSearch}
+        />
 
-          {/* Search Bar */}
-          <input
-            placeholder="Search students and their courses..."
-            value={studentCoursesSearch}
-            onChange={e => setStudentCoursesSearch(e.target.value)}
-            style={{ marginBottom: '1em', padding: '4px', width: '300px' }}
-          />
+        <StudentCoursesTable 
+          isAdmin={isAdmin}
+          filteredStudentCourses={filteredStudentCourses}
+          setEditStudentCourses={setEditStudentCourses}
+          setFormType={setFormType}
+          setIsFormOpen={setIsFormOpen}
+          handleDeleteTableData={handleDeleteTableData}
+          setNotification={setNotification}
+          studentCoursesSearch={studentCoursesSearch}
+          setStudentCoursesSearch={setStudentCoursesSearch}
+        />
 
-          <div className='addButtonContainer' style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginBottom: '10px' }}>
-            {isAdmin && (
-              <button className='addButton' onClick={() => {
-                setFormType('student_courses');
-                setEditStudentCourses(null);
-                setIsFormOpen(true);
-              }}>Add Student Course</button>
-            )}
-          </div>
-
-          <table className='studentCoursesTable' border="1" cellPadding="6">
-            <thead>
-              <tr>
-                <th>StudentID</th>
-                <th>CourseID</th>
-                {isAdmin && <th>Actions</th>}
-              </tr>
-            </thead>
-            <tbody>
-              {filteredStudentCourses.map(sc => (
-                <tr key={`${sc.StudentID}-${sc.CourseID}`}>
-                  <td>{sc.StudentID}</td>
-                  <td>{sc.CourseID}</td>
-                  {isAdmin && (
-                    <td className='table_Actions_Container'>
-                      <button onClick={() => {
-                        setEditStudentCourses(sc);
-                        setFormType('student_courses');
-                        setIsFormOpen(true);
-                      }}>Edit</button>
-                      <button onClick={() => {
-                        handleDeleteTableData(sc.CourseID, 'student_courses', sc.StudentID);
-                        setNotification({ show: true, message: 'Student Course deleted successfully', type: 'success' });
-                      }}>Delete</button>
-                    </td>
-                  )}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Student Container */}
+        {/* Course Card Containers */}
         <div className='student_Course_Container_Parent'>
           {!loading && filteredCourses && filteredStudents && studentCourses && filteredStudentCourses && (
             filteredStudents.map(student => {

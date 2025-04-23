@@ -138,50 +138,36 @@ export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}
           )}
 
           {type === 'student_courses' && (
-            <div className="form_fields">
-              {/* List all the students and course (writing out the IDs is less convenient)
-                  Wasn't able to figure out, but will implement this extra feature later */}
-              {/* <select
+          <div className="form_fields">
+              <div className="form_fields">
+              <select
                 name="StudentID"
                 value={formData.StudentID || ''}
                 onChange={handleChange}
                 required
               >
-                <option value="">Select Student By ID</option>
-                {studentData.map(student => {
-                  <option value={student.StudentID}>{student.studentID}</option>
-                })}
+                <option value="">Select Student</option>
+                {studentData && studentData.map(student => (
+                  <option key={student.StudentID} value={student.StudentID}>
+                    {student.FirstName} {student.LastName}
+                  </option>
+                ))}
               </select>
-
               <select
                 name="CourseID"
                 value={formData.CourseID || ''}
                 onChange={handleChange}
                 required
               >
-                <option value="">Select Course By ID</option>
-                {courseData.map(course => {
-                  <option value={course.CourseID}>{course.CoursePrefix}{course.CourseNumber}</option>
-                })}
-              </select> */}
-              <input
-                name="StudentID"
-                placeholder="Student ID"
-                type="number"
-                value={formData.StudentID || ''}
-                onChange={handleChange}
-                required
-              />
-
-              <input
-                name="CourseID"
-                placeholder="Course ID"
-                type="number"
-                value={formData.CourseID || ''}
-                onChange={handleChange}
-                required
-              />
-            </div>)}
+                <option value="">Select Course</option>
+                {courseData && courseData.map(course => (
+                  <option key={course.CourseID} value={course.CourseID}>
+                    {course.CoursePrefix}-{course.CourseNumber}
+                  </option>
+                ))}
+              </select>
+              </div>
+            </div> )}
             {type === 'grades' && (
               <div className="form_fields">
                 <input

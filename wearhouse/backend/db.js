@@ -101,6 +101,8 @@ db.serialize(() => {
     (3, 2, 87.9, 93.0, 98.1, 94.8, 89.6),
     (4, 3, 87.4, 95.1, 94.6, 93.3, 99.0);`)
 
+    db.run(`DELETE FROM student_courses`)
+
   db.run(`INSERT OR IGNORE INTO student_courses(StudentID, CourseID)
     VALUES (1, 4), 
     (1, 1),
@@ -109,7 +111,7 @@ db.serialize(() => {
     (3, 1), 
     (3, 2),
     (4, 3),
-    (4, 4);`);
+    (4, 1);`);
 });
 
 module.exports = db;

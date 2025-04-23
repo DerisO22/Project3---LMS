@@ -215,32 +215,44 @@ app.put('/grades/:studentId/:courseId', (req, res) => {
 
 // Update student_courses Table
 app.put('/student_courses/:studentId/:courseId', (req, res) => {
- const { StudentID, CourseID } = req.body;
- const { studentId, courseId } = req.params;
+  const { StudentID, CourseID } = req.body;
+  const { studentId, courseId } = req.params;
 
+  // First check if student is already enrolled in another section of the same course
+  db.get(`
+    SELECT c1.CoursePrefix, c1.CourseNumber 
+    FROM courses c1 
+    JOIN student_courses sc ON sc.CourseID = c1.CourseID 
+    JOIN courses c2 ON c2.CourseID = ? 
+    WHERE sc.StudentID = ? AND c1.CoursePrefix = c2.CoursePrefix 
+    AND sc.CourseID != ?`,
+    [CourseID, StudentID, courseId],
+    (err, row) => {
+      if (err) return res.status(500).json({ error: err.message });
 
- // Delete the old record and insert the new one
- db.serialize(() => {
-   db.run('DELETE FROM student_courses WHERE StudentID = ? AND CourseID = ?',
-     [studentId, courseId],
-     function(err) {
-       if (err) {
-         return res.status(500).json({ error: err.message });
-       }
-     }
-   );
+      if (row) {
+        return res.status(400).json({ error: `Student is already enrolled in ${row.CoursePrefix}-${row.CourseNumber}` });
+      }
 
+      // If no duplicate found, proceed with update
+      db.serialize(() => {
+        db.run('DELETE FROM student_courses WHERE StudentID = ? AND CourseID = ?',
+          [studentId, courseId],
+          function(err) {
+            if (err) return res.status(500).json({ error: err.message });
+          }
+        );
 
-   db.run('INSERT INTO student_courses (StudentID, CourseID) VALUES (?, ?)',
-     [StudentID, CourseID],
-     function(err) {
-       if (err) {
-         return res.status(500).json({ error: err.message });
-       }
-       res.json({ updated: true });
-     }
-   );
- });
+        db.run('INSERT INTO student_courses (StudentID, CourseID) VALUES (?, ?)',
+          [StudentID, CourseID],
+          function(err) {
+            if (err) return res.status(500).json({ error: err.message });
+            res.json({ updated: true });
+          }
+        );
+      });
+    }
+  );
 });
 
 
