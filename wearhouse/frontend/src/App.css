@@ -24,9 +24,10 @@
 }
 
 .text {
-  font-size: 2rem;
-  font-weight: 400;
+  font-size: 0.7rem;
+  font-weight: 600;
   text-align: center;
+  text-decoration: underline;
   color: var(--text-color);
 }
 
