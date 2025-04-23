@@ -179,7 +179,7 @@ export default function Dashboard({ isAdmin }) {
            setEditStudentCourses(null);
            setEditStudentGrades(null);
         }}
-          initialData={formType === 'courses' ? editCourse : formType === 'students' ? editStudent : editStudentCourses}
+          initialData={formType === 'courses' ? editCourse : formType === 'students' ? editStudent : formType === 'student_courses' ? editStudentCourses: editStudentGrades}
           studentData={students}
           courseData={courses}
         />

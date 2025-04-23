@@ -21,6 +21,8 @@ export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}
     onSubmit(formData);
   };
 
+  console.log(formData)
+
   return (
     <div className="modal_overlay">
       <div className="modal_content">
@@ -168,7 +170,7 @@ export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}
               </select>
               </div>
             </div> )}
-            {type === 'grades' && (
+            {type === 'grades' && formData && (
               <div className="form_fields">
                 <input
                   name="StudentID"
