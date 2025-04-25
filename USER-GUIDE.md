@@ -14,7 +14,14 @@ Once the server is successfully running in a browser, you are required to sign i
 The default login information is:  
 -   **Username:** `ADMIN`  
 -   **Password:** `ADMIN`  
+
+***Troubleshooting***
+Here are some common issues associated with server setup:  
+*Backside Errors on MacOS*
+If the backend throws an error upon startup, ensure that:  
+* XCode is installed and up to date
   
+If the issue persists, try reinstalling `express cors sqlite3`  
 ### Enrolling a student  
 *Create a student*  
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
