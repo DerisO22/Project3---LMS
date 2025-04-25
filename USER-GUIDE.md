@@ -1,13 +1,19 @@
 # User Guide
 ### Setup  
 *Run Backend*  
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.   
+Using the command `node server.js` will run the server's backend component on `port 3000`.  
 
 *Run Frontend*  
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  
+* Ensure that `npm` is installed on the frontend server.  
+    - Run `npm install` to install all necessary packages. This only needs to be done once.  
+* After `npm` is successfully installed, input the command `npm start` to run the server on `port 3001`. 
+* The frontend component requires confirmation to run on another port.
    
 *Signing In*  
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  
+Once the server is successfully running in a browser, you are required to sign in.
+The default login information is:  
+-   **Username:** `ADMIN`  
+-   **Password:** `ADMIN`  
   
 ### Enrolling a student  
 *Create a student*  
