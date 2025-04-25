@@ -146,7 +146,7 @@ app.get('/grades', (req, res) => {
 // Get student_courses table data
 app.get('/student_courses', (req, res) => {
  db.all(`
-   SELECT sc.StudentID, sc.CourseID
+   SELECT sc.StudentID, sc.CourseID, s.FirstName, s.LastName, c.CoursePrefix, c.CourseNumber
    FROM student_courses sc
    JOIN students s ON s.StudentID = sc.StudentID
    JOIN courses c ON c.CourseID = sc.CourseID

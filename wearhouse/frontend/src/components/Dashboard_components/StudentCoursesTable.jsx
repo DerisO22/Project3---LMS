@@ -36,16 +36,16 @@ const StudentCoursesTable = ({
         <table className='studentCoursesTable' border="1" cellPadding="6">
           <thead>
             <tr>
-              <th>StudentID</th>
-              <th>CourseID</th>
+              <th>Student</th>
+              <th>Course</th>
               {isAdmin && <th>Actions</th>}
             </tr>
           </thead>
           <tbody>
             {filteredStudentCourses.map(sc => (
               <tr key={`${sc.StudentID}-${sc.CourseID}`}>
-                <td>{sc.StudentID}</td>
-                <td>{sc.CourseID}</td>
+                <td>{`${sc.FirstName} ${sc.LastName}`}</td>
+                <td>{`${sc.CoursePrefix}-${sc.CourseNumber}`}</td>
                 {isAdmin && (
                   <td className='table_Actions_Container'>
                     <button onClick={() => {

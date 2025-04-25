@@ -21,6 +21,8 @@ export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}
     onSubmit(formData);
   };
 
+  console.log(formData)
+
   return (
     <div className="modal_overlay">
       <div className="modal_content">
@@ -32,6 +34,7 @@ export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}
 
           {type === 'courses' && (
             <div className="form_fields">
+              <div className='text'>Course Prefix</div>
               <input
                 name="CoursePrefix"
                 placeholder="Course Prefix"
@@ -39,14 +42,16 @@ export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}
                 onChange={handleChange}
                 required
               />
+              <div className='text'>Course Section</div>
               <input
                 name="CourseNumber"
-                placeholder="Course Number"
+                placeholder="Course Section"
                 type="number"
                 value={formData.CourseNumber || ''}
                 onChange={handleChange}
                 required
               />
+              <div className='text'>RoomNumber</div>
               <input
                 name="RoomNumber"
                 placeholder="Room Number"
@@ -55,6 +60,7 @@ export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}
                 onChange={handleChange}
                 required
               />
+              <div className='text'>Building</div>
               <input
                 name="Building"
                 placeholder="Building"
@@ -66,6 +72,7 @@ export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}
               {/* Quality of Life stuff
                   Typing out the times is annoying
               */} 
+              <div className='text'>Starting Time</div>
               <select
                 className='drop_down_time'
                 name="StartTime"
@@ -88,6 +95,7 @@ export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}
 
           {type === 'students' && (
             <div className="form_fields">
+              <div className='text'>First Name</div>
               <input
                 name="FirstName"
                 placeholder="First Name"
@@ -95,6 +103,7 @@ export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}
                 onChange={handleChange}
                 required
               />
+              <div className='text'>Last Name</div>
               <input
                 name="LastName"
                 placeholder="Last Name"
@@ -102,6 +111,7 @@ export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}
                 onChange={handleChange}
                 required
               />
+              <div className='text'>Email</div>
               <input
                 name="Email"
                 placeholder="Email"
@@ -110,6 +120,7 @@ export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}
                 onChange={handleChange}
                 required
               />
+              <div className='text'>Major</div>
               <select
                 name="MajorID"
                 value={formData.MajorID || ''}
@@ -122,6 +133,7 @@ export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}
                 <option value={2}>Computer Science</option>
               </select>
 
+              <div className='text'>Graduation Year</div>
               <select
                 name="GraduationYear"
                 value={formData.GraduationYear || ''}
@@ -140,6 +152,7 @@ export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}
           {type === 'student_courses' && (
           <div className="form_fields">
               <div className="form_fields">
+              <div className='text'>Student</div>
               <select
                 name="StudentID"
                 value={formData.StudentID || ''}
@@ -153,6 +166,7 @@ export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}
                   </option>
                 ))}
               </select>
+              <div className='text'>Course</div>
               <select
                 name="CourseID"
                 value={formData.CourseID || ''}
@@ -168,8 +182,9 @@ export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}
               </select>
               </div>
             </div> )}
-            {type === 'grades' && (
+            {type === 'grades' && formData && (
               <div className="form_fields">
+                <div className='text'>Student</div>
                 <input
                   name="StudentID"
                   placeholder="Student ID"
@@ -178,6 +193,7 @@ export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}
                   onChange={handleChange}
                   required
                 />
+                <div className='text'>Course</div>
                 <input
                   name="CourseID"
                   placeholder="Course ID"
@@ -186,6 +202,7 @@ export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}
                   onChange={handleChange}
                   required
                 />
+                <div className='text'>Quiz 1 Grade</div>
                 <input
                   name="quiz1Grade"
                   placeholder="Quiz 1 Grade"
@@ -197,6 +214,7 @@ export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}
                   onChange={handleChange}
                   required
                 />
+                <div className='text'>Quiz 2 Grade</div>
                 <input
                   name="quiz2Grade"
                   placeholder="Quiz 2 Grade"
@@ -208,6 +226,7 @@ export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}
                   onChange={handleChange}
                   required
                 />
+                <div className='text'>Project 1 Grade</div>
                 <input
                   name="project1Grade"
                   placeholder="Project 1 Grade"
@@ -219,6 +238,7 @@ export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}
                   onChange={handleChange}
                   required
                 />
+                <div className='text'>Project 2 Grade</div>
                 <input
                   name="project2Grade"
                   placeholder="Project 2 Grade"
@@ -230,6 +250,7 @@ export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}
                   onChange={handleChange}
                   required
                 />
+                <div className='text'>Final Exam Grade</div>
                 <input
                   name="finalExamGrade"
                   placeholder="Final Exam Grade"
