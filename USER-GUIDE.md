@@ -45,25 +45,79 @@ In the event that a course must be removed from the system:
 - Within the Actions column: find the `Delete` button
 - Click the `delete` button
 
-*Edit a student*  
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+### Student Management  
+*Create a Student*  
+Within the student management section: click `Add Student`  
+This will produce a form pop-up and all you to enter the student's information.   
+To create a 2026 Data Science student named Boba Fett, with an associated email of boba.fett@starwars.org, follow this image:  
+![Student Creation Image]()   
 
-*Assigning Grades*  
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  
+*Update a Student*  
+Within the student management section, identify the student you are looking for.  
+Within that row, navigate to the `Actions` column and select the `Edit` button.  
+By default, the values will be autofilled, allowing you to edit specific information without the need to retype all of the student's data.  
+Make the necessary changes and select: `Save Changes` to append your changes to the Student Database.  
+
+*Delete a Student*  
+To remove a student who has left the school:  
+Navigate to the `Student Management` Section  
+Find the specific student within the table.  
+Navigate to the `Actions` Column for that student  
+Select delete to remove the student from the database.  
   
-### Using instructor features   
+### Grades Management  
+*Add Student Grades*  
+To add associated grades to a student profile:   
+Navigate to the `Student Grades Management` section.  
+Select: `Add Student's Grades`  
+This will create a pop-up form.  
+To input values for a specific student, identify the associated StudentID value.  
+With the case of our previous student: Boba Fett's student ID is **294**  
+Identify the CourseID for the class associated with the grades.  
+In this case, DAT-210 has a CourseID of **1**  
+Then fill the associated grades following the image below:  
+![Student Creation Image]()   
+**Note** that if a student has yet to complete an assignment or an assignment has yet to be assigned:  
+Input a *0* for those grades  
 
-*Search for Class*  
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  
+*Update Student Grades*  
+To update grades associated with a specific student:  
+Navigate to the `Student Grades Management` section.  
+Find the specific student you wish to edit:  
+Navigate to the `Actions` column  
+Select `Edit`  
+This will create a pop-up window.  
+Make the necessary changes  
+Select `Save Changes` to append your grade changes  
 
-*Search for a Student*  
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  
+*Delete Student Grades*  
+To remove a student's listed grades:  
+Identify the specific students grades within the `Student Grades Management` section.  
+Navigate to that student's `Action` column  
+Select delete   
 
-*Editing an Individual Student*  
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  
+### Student's Courses Management  
+*Associate a Student with a Course*  
+To associate a specific student with a specific course:  
+Navigate to the `Student's Courses Management` section  
+Select `Add Student Courses`  
+This will create a pop-up window.  
+Within the pop-up window:  
+Click the `Select Student` dropdown  
+Select the desired student  
+Then click the `Select Course` dropdown  
+Select the desired course  
+Click `Save Changes` to confirm your changes  
 
+*Update a Student-Course Pair*  
+Navigate to the `Student's Courses Management` section  
+Identify the Student-Course pair you wish to update  
+Within that row, select `Edit`  
+This will produce a pop-up window.  
+Make your necessary changes.  
+Click `Save Changes` to confirm your updates  
 
-*Edit a Student's Grade*  
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  
-  
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+*Delete a Student-Course Pair*  
+Navigate to the `Student's Courses Management` section  
+Identify the Student-Course pair you wish to delete  
+Within that row, select `Delete`  
