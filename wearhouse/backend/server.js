@@ -90,14 +90,22 @@ app.post('/student_courses/', (req, res) => {
 app.post('/grades/', (req, res) => {
   const { StudentID, CourseID, quiz1Grade, quiz2Grade, project1Grade, project2Grade, finalExamGrade } = req.body;
 
-  db.run(
-    'INSERT OR IGNORE INTO grades (StudentID, CourseID, quiz1Grade, quiz2Grade, project1Grade, project2Grade, finalExamGrade) VALUES (?, ?, ?, ?, ?, ?, ?)',
-    [StudentID, CourseID, quiz1Grade, quiz2Grade, project1Grade, project2Grade, finalExamGrade],
-    function (err) {
-      if (err) return res.status(500).json(err);
-      res.json({ id: this.lastID })
-    }
-  )
+  db.get(`
+    SELECT * FROM student_courses WHERE StudentID = ? AND CourseID = ?`,
+  [StudentID, CourseID],
+  (err, row) => {
+    if (err) return res.status(500).json({ err: err.message })
+    if (!row) return res.status(400).json({ err: "Student isn't enrolled in this course"})
+      
+    db.run(
+      'INSERT OR IGNORE INTO grades (StudentID, CourseID, quiz1Grade, quiz2Grade, project1Grade, project2Grade, finalExamGrade) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [StudentID, CourseID, quiz1Grade, quiz2Grade, project1Grade, project2Grade, finalExamGrade],
+      function (err) {
+        if (err) return res.status(500).json(err);
+        res.json({ id: this.lastID })
+      }
+    )
+  })
 });
 
 
