@@ -215,7 +215,7 @@ app.put('/grades/:studentId/:courseId', (req, res) => {
     'UPDATE grades SET quiz1Grade = ?, quiz2Grade = ?, project1Grade = ?, project2Grade = ?, finalExamGrade = ? WHERE StudentID = ? AND CourseID = ?',
     [quiz1Grade, quiz2Grade, project1Grade, project2Grade, finalExamGrade, studentId, courseId],
     function(err) {
-      if (err) return res.status(500).json(err);
+      if (err) return res.status(500).json({ error: err.message });
       res.json({ updated: this.changes });
     }
   );
@@ -242,7 +242,6 @@ app.put('/student_courses/:studentId/:courseId', (req, res) => {
         return res.status(400).json({ error: `Student is already enrolled in ${row.CoursePrefix}-${row.CourseNumber}` });
       }
 
-      // If no duplicate found, proceed with update
       db.serialize(() => {
         db.run('DELETE FROM student_courses WHERE StudentID = ? AND CourseID = ?',
           [studentId, courseId],
