@@ -1,7 +1,6 @@
-// Course Desc in this order:
-
 import { useState } from "react";
 
+// Course Desc in this order:
 // DAT-210, CSI-300, DAT-410
 const courseDesriptions = [
     "Students will analyze data using Python programming language to obtain insights from real-world data sets. Students will access data files containing both numerical and categorical data, which they will prepare for analysis by data preprocessing, data wrangling, and data aggregation. Students will conduct statistical analysis, text analysis, and date/time series analysis, summarize their findings in a meaningful manner, and use visualization to illustrate patterns and trends in the data.",
