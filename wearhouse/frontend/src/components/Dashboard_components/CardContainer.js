@@ -29,8 +29,12 @@ const CardContainer = ({ isAdmin, courses = [], setEditCourse, deleteStudentCour
                     </div>
                     <div className='course_Time_Container'>
                         <p className='cardText'>Start Time: {course.StartTime || 'N/A'} {course.StartTime.split(':')[0] <= 12 ? 'AM' : 'PM'}</p>
-                        <button className="downloadButton" href={`./${course.CoursePrefix}_Syllabus.pdf`} download={`./${course.CoursePrefix}_Syllabus.pdf`}>
-                            Download Syllabus
+                        <button className="downloadButton"
+                            onClick = {() => {
+                                window.open(`./${course.CoursePrefix}_Syllabus.pdf`)
+                            }}
+                            >
+                            Open Syllabus
                         </button>
                     </div>
                     {isAdmin && (
