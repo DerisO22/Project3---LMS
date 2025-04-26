@@ -1,44 +1,59 @@
-import React from 'react'
+import React from "react";
 
-const StudentsTable = ({isAdmin, filteredStudents, setEditStudent, setFormType, setIsFormOpen, handleDeleteTableData, setNotification, studentSearch, setStudentSearch}) => {
+const StudentsTable = ({
+  isAdmin,
+  filteredStudents,
+  setEditStudent,
+  setFormType,
+  setIsFormOpen,
+  handleDeleteTableData,
+  setNotification,
+  studentSearch,
+  setStudentSearch,
+}) => {
   return (
     <>
-        <h2 className='header2'>Student Management</h2>
+      <h2 className="header2">Student Management</h2>
 
-        {/* Student Search Bar */}
-        <input
+      {/* Student Search Bar */}
+      <input
         placeholder="Search students..."
         value={studentSearch}
-        onChange={e => setStudentSearch(e.target.value)}
-        style={{ marginBottom: '1em', padding: '4px', width: '300px' }}
-        />
-        <div className='addButtonContainer'>
+        onChange={(e) => setStudentSearch(e.target.value)}
+        style={{ marginBottom: "1em", padding: "4px", width: "300px" }}
+      />
+      <div className="addButtonContainer">
         {isAdmin && (
-            <button className='addButton' onClick={() => {
-            setFormType('students');
-            setEditStudent(null);
-            setIsFormOpen(true);
-            }}>Add Student</button>
+          <button
+            className="addButton"
+            onClick={() => {
+              setFormType("students");
+              setEditStudent(null);
+              setIsFormOpen(true);
+            }}
+          >
+            Add Student
+          </button>
         )}
-        </div>
+      </div>
 
-        {/* Student Table */}
-        <div className='tableContainer'>
-        <table className='studentTable' border="1" cellPadding="6">
-            <thead>
+      {/* Student Table */}
+      <div className="tableContainer">
+        <table className="studentTable" border="1" cellPadding="6">
+          <thead>
             <tr>
-                {/* <th>StudentID</th> */}
-                <th>FirstName</th>
-                <th>LastName</th>
-                <th>Email</th>
-                <th>Major</th>
-                <th>GraduationYear</th>
-                {isAdmin && <th>Actions</th>}
+              {/* <th>StudentID</th> */}
+              <th>FirstName</th>
+              <th>LastName</th>
+              <th>Email</th>
+              <th>Major</th>
+              <th>GraduationYear</th>
+              {isAdmin && <th>Actions</th>}
             </tr>
-            </thead>
-            <tbody>
-            {filteredStudents.map(student => (
-                <tr key={student.StudentID}>
+          </thead>
+          <tbody>
+            {filteredStudents.map((student) => (
+              <tr key={student.StudentID}>
                 {/* <td>{student.StudentID}</td> */}
                 <td>{student.FirstName}</td>
                 <td>{student.LastName}</td>
@@ -46,25 +61,37 @@ const StudentsTable = ({isAdmin, filteredStudents, setEditStudent, setFormType, 
                 <td>{student.Major}</td>
                 <td>{student.GraduationYear}</td>
                 {isAdmin && (
-                    <td className='table_Actions_Container'>
-                    <button onClick={() => {
+                  <td className="table_Actions_Container">
+                    <button
+                      onClick={() => {
                         setEditStudent(student);
-                        setFormType('students');
+                        setFormType("students");
                         setIsFormOpen(true);
-                    }}>Edit</button>
-                    <button onClick={() => {
-                        handleDeleteTableData(student.StudentID, 'students');
-                        setNotification({ show: true, message: 'Student deleted successfully', type: 'success' });
-                    }}>Delete</button>
-                    </td>
+                      }}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => {
+                        handleDeleteTableData(student.StudentID, "students");
+                        setNotification({
+                          show: true,
+                          message: "Student deleted successfully",
+                          type: "success",
+                        });
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </td>
                 )}
-                </tr>
+              </tr>
             ))}
-            </tbody>
+          </tbody>
         </table>
-        </div>
+      </div>
     </>
-  )
-}
+  );
+};
 
 export default StudentsTable;

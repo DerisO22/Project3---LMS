@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import Dashboard from './components/Dashboard';
+import { useState } from "react";
+import Dashboard from "./components/Dashboard";
 // import AdminPanel from './components/AdminPanel'
-import Login from './components/Login';
+import Login from "./components/Login";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -12,8 +12,10 @@ function App() {
         {!loggedIn ? (
           <Login onLogin={() => setLoggedIn(true)} />
         ) : (
-          <div className='logoutContainer'>
-            <button className='logoutButton' onClick={() => setLoggedIn(false)}>Logout</button>
+          <div className="logoutContainer">
+            <button className="logoutButton" onClick={() => setLoggedIn(false)}>
+              Logout
+            </button>
           </div>
         )}
       </div>

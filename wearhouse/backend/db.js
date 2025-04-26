@@ -1,7 +1,7 @@
-const path = require('path');
-const sqlite3 = require('sqlite3').verbose();
+const path = require("path");
+const sqlite3 = require("sqlite3").verbose();
 
-const dbPath = path.resolve(__dirname, 'db.sqlite');
+const dbPath = path.resolve(__dirname, "db.sqlite");
 const db = new sqlite3.Database(dbPath);
 
 db.serialize(() => {
@@ -70,13 +70,15 @@ db.serialize(() => {
   )`);
 
   // Insert initial data
-  db.run(`INSERT OR IGNORE INTO majors (Major) VALUES ('Data Science'), ('Computer Science')`);
-  
+  db.run(
+    `INSERT OR IGNORE INTO majors (Major) VALUES ('Data Science'), ('Computer Science')`
+  );
+
   db.run(`INSERT OR IGNORE INTO location (RoomNumber, Building) VALUES 
     (210, 'Joyce Hall'),
     (201, 'Joyce Hall')`);
 
-  db.run(`DELETE FROM courses`)
+  db.run(`DELETE FROM courses`);
 
   db.run(`INSERT OR IGNORE INTO courses (CourseID, CoursePrefix, CourseNumber, LocationID, StartTime) 
     VALUES (1, 'DAT-210', 0, 1, '10:00'),
@@ -84,7 +86,7 @@ db.serialize(() => {
     (3, 'CSI-300', 1, 2, '10:00'),
     (4, 'CSI-300', 2, 2, '11:30')`);
 
-  db.run(`DELETE FROM students`)
+  db.run(`DELETE FROM students`);
 
   db.run(`INSERT OR IGNORE INTO students (StudentID, FirstName, LastName, Email, MajorID, GraduationYear) VALUES 
     (1, 'Bob', 'Bash', 'bob.bash@champlain.edu', 1, 2026),
@@ -92,7 +94,7 @@ db.serialize(() => {
     (3, 'Jack', 'Jenkins', 'jack.jenkins@champlain.edu', 2, 2025),
     (4, 'Rondo', 'Redis', 'rondo.redis@champlain.edu', 1, 2026)`);
 
-  db.run(`DELETE FROM grades`)
+  db.run(`DELETE FROM grades`);
 
   db.run(`INSERT OR IGNORE INTO grades (StudentID, CourseID, quiz1Grade, quiz2Grade, project1Grade, project2Grade, finalExamGrade)
     VALUES (1, 4, 89.4, 93.2, 92.7, 96.5, 94.0),
@@ -102,9 +104,9 @@ db.serialize(() => {
     (3, 1, 82.4, 93.2, 87.7, 76.5, 92.0),
     (3, 2, 92.9, 81.5, 94.0, 91.7, 93.1),
     (4, 3, 87.9, 73.0, 88.1, 94.8, 86.6),
-    (4, 1, 87.4, 81.1, 97.2, 93.3, 93.4);`)
+    (4, 1, 87.4, 81.1, 97.2, 93.3, 93.4);`);
 
-  db.run(`DELETE FROM student_courses`)
+  db.run(`DELETE FROM student_courses`);
 
   db.run(`INSERT OR IGNORE INTO student_courses(StudentID, CourseID)
     VALUES (1, 4), 
