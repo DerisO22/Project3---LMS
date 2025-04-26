@@ -27,7 +27,7 @@ const StudentsTable = ({isAdmin, filteredStudents, setEditStudent, setFormType, 
         <table className='studentTable' border="1" cellPadding="6">
             <thead>
             <tr>
-                <th>StudentID</th>
+                {/* <th>StudentID</th> */}
                 <th>FirstName</th>
                 <th>LastName</th>
                 <th>Email</th>
@@ -39,7 +39,7 @@ const StudentsTable = ({isAdmin, filteredStudents, setEditStudent, setFormType, 
             <tbody>
             {filteredStudents.map(student => (
                 <tr key={student.StudentID}>
-                <td>{student.StudentID}</td>
+                {/* <td>{student.StudentID}</td> */}
                 <td>{student.FirstName}</td>
                 <td>{student.LastName}</td>
                 <td>{student.Email}</td>

@@ -28,8 +28,8 @@ const CoursesTable = ({isAdmin, filteredCourses, setEditCourse, setFormType, set
           <table border="1" cellPadding="6">
             <thead>
               <tr>
-                <th>Course ID</th>
-                <th>Prefix</th>
+                {/* <th>Course ID</th> */}
+                <th>Course</th>
                 <th>Number</th>
                 <th>Room</th>
                 <th>Building</th>
@@ -40,7 +40,7 @@ const CoursesTable = ({isAdmin, filteredCourses, setEditCourse, setFormType, set
             <tbody>
               {filteredCourses.map(course => (
                 <tr key={course.CourseID}>
-                  <td>{course.CourseID}</td>
+                  {/* <td>{course.CourseID}</td> */}
                   <td>{course.CoursePrefix}</td>
                   <td>{course.CourseNumber}</td>
                   <td>{course.RoomNumber}</td>

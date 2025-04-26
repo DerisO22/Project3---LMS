@@ -1,4 +1,3 @@
-
 const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
 
@@ -80,10 +79,10 @@ db.serialize(() => {
   db.run(`DELETE FROM courses`)
 
   db.run(`INSERT OR IGNORE INTO courses (CourseID, CoursePrefix, CourseNumber, LocationID, StartTime) 
-    VALUES (1, 'DAT-210', 0, 1, '10:00:00'),
-    (2, 'DAT-410', 0, 1, '11:30:00'),
-    (3, 'CSI-300', 1, 2, '10:00:00'),
-    (4, 'CSI-300', 2, 2, '11:30:00')`);
+    VALUES (1, 'DAT-210', 0, 1, '10:00'),
+    (2, 'DAT-410', 0, 1, '11:30'),
+    (3, 'CSI-300', 1, 2, '10:00'),
+    (4, 'CSI-300', 2, 2, '11:30')`);
 
   db.run(`DELETE FROM students`)
 
@@ -97,11 +96,15 @@ db.serialize(() => {
 
   db.run(`INSERT OR IGNORE INTO grades (StudentID, CourseID, quiz1Grade, quiz2Grade, project1Grade, project2Grade, finalExamGrade)
     VALUES (1, 4, 89.4, 93.2, 92.7, 96.5, 94.0),
-    (2, 1, 92.2, 84.5, 94.0, 91.7, 93.1),
-    (3, 2, 87.9, 93.0, 98.1, 94.8, 89.6),
-    (4, 3, 87.4, 95.1, 94.6, 93.3, 99.0);`)
+    (1, 1, 92.2, 84.5, 94.0, 91.7, 93.1),
+    (2, 2, 87.9, 93.0, 98.1, 94.8, 89.6),
+    (2, 3, 87.4, 95.1, 94.6, 93.3, 99.0),
+    (3, 1, 82.4, 93.2, 87.7, 76.5, 92.0),
+    (3, 2, 92.9, 81.5, 94.0, 91.7, 93.1),
+    (4, 3, 87.9, 73.0, 88.1, 94.8, 86.6),
+    (4, 1, 87.4, 81.1, 97.2, 93.3, 93.4);`)
 
-    db.run(`DELETE FROM student_courses`)
+  db.run(`DELETE FROM student_courses`)
 
   db.run(`INSERT OR IGNORE INTO student_courses(StudentID, CourseID)
     VALUES (1, 4), 

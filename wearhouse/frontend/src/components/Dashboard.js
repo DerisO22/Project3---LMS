@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import '../App.css';
-import CardContainer from './CardContainer';
+import CardContainer from './Dashboard_components/CardContainer';
 import Form from './Form'; 
 import Notification from './Notification'; 
 import CoursesTable from './Dashboard_components/CoursesTable';
@@ -137,7 +137,7 @@ export default function Dashboard({ isAdmin }) {
     );
 
     const filteredStudentCourses = studentCourses.filter(sc =>
-      `${sc.StudentID}`.toLowerCase().includes(studentCoursesSearch.toLowerCase())
+      `${sc.FirstName}`.toLowerCase().includes(studentCoursesSearch.toLowerCase())
     );
 
     const filteredGrades = studentGrades.filter(g => 

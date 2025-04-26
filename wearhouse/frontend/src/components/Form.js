@@ -81,14 +81,14 @@ export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}
                 required
               >
                 <option value="">Select Starting Time</option>
-                <option value='8:30:00' > 8:30 AM</option>
-                <option value='10:00:00'>10:00 AM</option>
-                <option value='11:30:00'>11:30 AM</option>
-                <option value='13:00:00'> 1:00 PM</option>
-                <option value='14:30:00'> 2:30 PM</option>
-                <option value='16:00:00'> 4:00 PM</option>
-                <option value='17:30:00'> 5:30 PM</option>
-                <option value='19:00:00'> 7:00 PM</option>
+                <option value='8:30' > 8:30 AM</option>
+                <option value='10:00'>10:00 AM</option>
+                <option value='11:30'>11:30 AM</option>
+                <option value='13:00'> 1:00 PM</option>
+                <option value='14:30'> 2:30 PM</option>
+                <option value='16:00'> 4:00 PM</option>
+                <option value='17:30'> 5:30 PM</option>
+                <option value='19:00'> 7:00 PM</option>
               </select>
             </div>
           )}
@@ -185,23 +185,34 @@ export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}
             {type === 'grades' && formData && (
               <div className="form_fields">
                 <div className='text'>Student</div>
-                <input
+                <select
                   name="StudentID"
-                  placeholder="Student ID"
-                  type="number"
                   value={formData.StudentID || ''}
                   onChange={handleChange}
                   required
-                />
+                >
+                  <option value="">Select Student</option>
+                  {studentData && studentData.map(student => (
+                    <option key={student.StudentID} value={student.StudentID}>
+                      {student.FirstName} {student.LastName}
+                    </option>
+                  ))}
+                </select>
                 <div className='text'>Course</div>
-                <input
+                <select
                   name="CourseID"
-                  placeholder="Course ID"
-                  type="number"
                   value={formData.CourseID || ''}
                   onChange={handleChange}
                   required
-                />
+                >
+                  <option value="">Select Course</option>
+                  {courseData && courseData.map(course => (
+                    <option key={course.CourseID} value={course.CourseID}>
+                      {course.CoursePrefix}-{course.CourseNumber}
+                    </option>
+                  ))}
+                </select>
+
                 <div className='text'>Quiz 1 Grade</div>
                 <input
                   name="quiz1Grade"

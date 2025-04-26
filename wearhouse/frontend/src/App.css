@@ -49,7 +49,7 @@ td {
 }
 
 .addButton {
-  width: 5rem;
+  width: 7rem;
   height: 3rem;
   color: black;
   background-color: var(--bg2-color);
@@ -58,6 +58,19 @@ td {
 
 button {
   font-weight: 700;
+  margin: 0.2rem;
+}
+
+.downloadButton {
+  text-align: center;
+  width: 5.5rem;
+  height: 2.5rem;
+  color: var(--text-color);
+  background-color: var(--bg4-color);
+  font-weight: 700;
+  margin-top: -0.3rem;
+  margin-bottom: 0.5rem;
+  margin-left: 1rem;
 }
 
 .table_Actions_Container {
@@ -160,7 +173,11 @@ button {
 }
 
 .course_Time_Container {
+  display: flex;
+  flex-direction: column;
+  margin-top: -0.5rem;
   background-color: var(--bg3-color);
+  height: fit-content;
 }
 
 .course_Actions_Container {
@@ -303,6 +320,7 @@ table button {
   right: 0;
   z-index: 5;
   position: absolute;
+  margin: 0;
   background-color: var(--bg2-color);
   color: var(--text-color);
   width: 80px;

@@ -1,8 +1,7 @@
-import React from 'react';
-import '../App.css';
-
+import { useState } from "react";
 
 const CardContainer = ({ isAdmin, courses = [], setEditCourse, deleteStudentCourse, studentID, setNotification }) => {
+
     if ( !Array.isArray(courses) || courses.length === 0) {
         return <div className='student_course_container'>No courses available</div>;
     }
@@ -19,7 +18,10 @@ const CardContainer = ({ isAdmin, courses = [], setEditCourse, deleteStudentCour
                         <p className='cardText'>{course.Building || 'N/A'}</p>
                     </div>
                     <div className='course_Time_Container'>
-                        <p className='cardText'>{course.StartTime || 'N/A'}</p>
+                        <p className='cardText'>Start Time: {course.StartTime || 'N/A'} {course.StartTime.split(':')[0] <= 12 ? 'AM' : 'PM'}</p>
+                        <button className="downloadButton" href={`./${course.CoursePrefix}_Syllabus.pdf`} download={`./${course.CoursePrefix}_Syllabus.pdf`}>
+                            Download Syllabus
+                        </button>
                     </div>
                     {isAdmin && (
                         <div className='course_Actions_Container'>
