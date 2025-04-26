@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import './Notification.css';
+import React, { useEffect } from "react";
+import "./Notification.css";
 
 const Notification = ({ isVisible, message, type, onClose }) => {
   useEffect(() => {
@@ -14,10 +14,12 @@ const Notification = ({ isVisible, message, type, onClose }) => {
   if (!isVisible) return null;
 
   return (
-    <div className={`notification ${type} ${isVisible ? 'show' : ''}`}>
+    <div className={`notification ${type} ${isVisible ? "show" : ""}`}>
       <div className="notification-content">
         <span className="notification-message">{message}</span>
-        <button className="notification-close" onClick={onClose}>×</button>
+        <button className="notification-close" onClick={onClose}>
+          ×
+        </button>
       </div>
     </div>
   );
