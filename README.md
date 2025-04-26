@@ -17,7 +17,7 @@ CSI-300: Database Management Systems
 ### Issue: 
 Backend throws an error
 ### Fix:
-Ensure Xcode is up to date
+Ensure Xcode is up to date (Apple Store)
 Rerun `node server.js` on the backend
 
 If issue persists: try reinstalling `express cors sqlite3`
