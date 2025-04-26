@@ -1,3 +1,5 @@
+import DropDownText from "./DropDownText";
+
 const CardContainer = ({
   isAdmin,
   courses = [],
@@ -41,6 +43,9 @@ const CardContainer = ({
               Start Time: {course.StartTime || "N/A"}{" "}
               {course.StartTime.split(":")[0] <= 12 ? "AM" : "PM"}
             </p>
+            <DropDownText 
+              course = {course}
+            />
             <button
               className="downloadButton"
               onClick={() => {
