@@ -1,10 +1,20 @@
 import { useState } from "react";
 
-const CardContainer = ({ isAdmin, courses = [], setEditCourse, deleteStudentCourse, studentID, setNotification }) => {
+const CardContainer = ({ isAdmin, courses = [], setEditCourse, deleteStudentCourse, studentID, setNotification, setEditStudentCourses, setFormType, setIsFormOpen }) => {
 
     if ( !Array.isArray(courses) || courses.length === 0) {
         return <div className='student_course_container'>No courses available</div>;
     }
+
+    const handleEdit = (course) => {
+        setEditStudentCourses({
+            StudentID: studentID,
+            CourseID: course.CourseID,
+            ...course
+        });
+        setFormType('student_courses_card');
+        setIsFormOpen(true);
+    };
 
     return (
         <div className='student_course_container'>
@@ -25,7 +35,12 @@ const CardContainer = ({ isAdmin, courses = [], setEditCourse, deleteStudentCour
                     </div>
                     {isAdmin && (
                         <div className='course_Actions_Container'>
-                            <button onClick={() => setEditCourse(course)}>Edit</button>
+                            {/* <button onClick={() => {
+                                setEditStudentCourses(course);
+                                setFormType('student_courses_card');
+                                setIsFormOpen(true);
+                            }}>Edit</button> */}
+                            <button onClick={() => handleEdit(course)}>Edit</button>
                             <button onClick={() => {
                                 deleteStudentCourse(course.CourseID, 'student_courses', studentID)
                                 setNotification({ show: true, message: `Student's Course deleted successfully`, type: 'success' });

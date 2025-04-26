@@ -6,7 +6,14 @@ export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}
   const [formData, setFormData] = useState(initialData || {});
 
   useEffect(() => {
-    setFormData(initialData || {});
+    if (initialData && initialData.CourseID) {
+      setFormData({
+        ...initialData,
+        CourseID: initialData.CourseID.toString()
+      });
+    } else {
+      setFormData(initialData || {});
+    }
   }, [initialData]);
 
   if (!isOpen) return null;
@@ -182,6 +189,34 @@ export default function Form({ type, isOpen, onClose, onSubmit, initialData = {}
               </select>
               </div>
             </div> )}
+
+            {/* Edit Form for courses inside Card Containers */}
+            {type === 'student_courses_card' && (
+              <div className="form_fields">
+                <div className="form_fields">
+                <div className='text'>Course</div>
+                <input 
+                  type="hidden" 
+                  name="StudentID" 
+                  value={formData.StudentID || ''} 
+                />
+                <select
+                  name="CourseID"
+                  value={formData.CourseID || ''}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Select Course</option>
+                  {courseData && courseData.map(course => (
+                    <option key={course.CourseID} value={course.CourseID}>
+                      {course.CoursePrefix}-{course.CourseNumber}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div> )}
+
+            {/* Grades Form */}
             {type === 'grades' && formData && (
               <div className="form_fields">
                 <div className='text'>Student</div>

@@ -81,13 +81,13 @@ export default function Dashboard({ isAdmin }) {
       let isEdit;
       if (type === 'courses'){ isEdit = editCourse; }
       if (type === 'students'){ isEdit = editStudent; }
-      if (type === 'student_courses'){ isEdit = editStudentCourses; }
+      if (type === 'student_courses' || type ==='student_courses_card'){ isEdit = editStudentCourses; }
       if (type === 'grades') { isEdit = editStudentGrades; }
       const method = isEdit ? 'PUT' : 'POST';
      
       let url = `http://localhost:3000/${type}`;
       if (isEdit) {
-        if (type === 'student_courses') {
+        if (type === 'student_courses' || type === 'student_courses_card') {
           url = `${url}/${isEdit.StudentID}/${isEdit.CourseID}`;
         } 
         if (type === 'courses') {
@@ -173,13 +173,20 @@ export default function Dashboard({ isAdmin }) {
            if (formType === 'student_courses') {
              addOrUpdateData(data, 'student_courses');
            }
+           if (formType === 'student_courses_card') {
+            addOrUpdateData(data, 'student_courses');
+          }
            setIsFormOpen(false);
            setEditCourse(null);
            setEditStudent(null);
            setEditStudentCourses(null);
            setEditStudentGrades(null);
         }}
-          initialData={formType === 'courses' ? editCourse : formType === 'students' ? editStudent : formType === 'student_courses' ? editStudentCourses: editStudentGrades}
+          initialData={formType === 'courses' ? editCourse : 
+                       formType === 'students' ? editStudent : 
+                       formType === 'student_courses' ? editStudentCourses : 
+                       formType === 'grades' ? editStudentGrades :
+                       editStudentCourses}
           studentData={students}
           courseData={courses}
         />
@@ -276,6 +283,9 @@ export default function Dashboard({ isAdmin }) {
                     setEditCourse={setEditCourse}
                     setNotification={setNotification}
                     deleteStudentCourse={handleDeleteTableData}
+                    setEditStudentCourses = {setEditStudentCourses}
+                    setFormType = {setFormType}
+                    setIsFormOpen={setIsFormOpen}
                     studentID={student.StudentID}
                   />
                 </div>
