@@ -453,7 +453,7 @@ button:hover {
 .studentCoursesTableContainer {
   width: 100%;
   overflow: auto;
-  margin-top: 5rem;
+  margin-top: 2rem;
 }
 
 .studentCoursesTable {
